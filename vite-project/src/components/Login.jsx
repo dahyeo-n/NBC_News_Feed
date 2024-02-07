@@ -1,54 +1,59 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import * as S from './style/Login.style';
 
 function Login() {
   return (
     <main>
-      <section>
+      <S.Section>
         {/* 로그인,비번 최상위 부모 */}
-        <div>
-          <h2>LOGIN</h2>
+        <S.Wrapper>
+          <S.H2>LOGIN</S.H2>
           <form>
-            <div>
-              <input type="email" placeholder="이메일" autoFocus="autofocus" />
-              {/* <div>*아이디를 입력해주세요.</div> */}
-            </div>
-            <div>
-              <input
+            <S.InputWrapper>
+              <S.InputStyle
+                type="email"
+                placeholder="이메일"
+                autoFocus="autofocus"
+              />
+              {/* <S.Validation>*아이디를 입력해주세요.</S.Validation> */}
+            </S.InputWrapper>
+            <S.InputWrapper>
+              <S.InputStyle
                 type="password"
                 placeholder="password"
                 autoFocus="autofocus"
               />
-              {/* <div>*비밀번호를 입력해주세요.</div> */}
-            </div>
+              {/* <S.Validation>*비밀번호를 입력해주세요.</S.Validation> */}
+            </S.InputWrapper>
             <div>
-              <button type="submit">로그인</button>
+              <S.ButtonStyle type="submit">로그인</S.ButtonStyle>
             </div>
           </form>
           {/* form 파트 끝 부분 */}
           {/* 회원가입부분 */}
-          <div>
+          <S.JoinWrap>
             <ul>
               <li>
                 <Link to={'/join'}>회원가입</Link>
               </li>
             </ul>
-          </div>
+          </S.JoinWrap>
           {/* 회원가입 파트 끝 */}
           {/* 소셜로그인 */}
-          <div>
+          <S.EtcLoginWrap>
             <p>or</p>
-            <ul>
+            <S.EtcLoginUl>
               <li>
                 <Link to={''}>구글 로그인</Link>
               </li>
               <li>
                 <Link to={''}>깃허브 로그인</Link>
               </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+            </S.EtcLoginUl>
+          </S.EtcLoginWrap>
+        </S.Wrapper>
+      </S.Section>
     </main>
   );
 }
