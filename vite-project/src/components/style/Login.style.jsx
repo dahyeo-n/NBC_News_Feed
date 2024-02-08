@@ -43,10 +43,11 @@ export const ButtonStyle = styled.button`
   margin-top: 20px;
 `;
 export const Validation = styled.div`
-  color: #ff0000 !important;
-  text-align: left;
+  color: #ff0000;
+  display: flex;
   text-indent: 15px;
-  display: none;
+  font-size: 10px;
+  margin-top: 5px;
 `;
 
 export const JoinWrap = styled.div`

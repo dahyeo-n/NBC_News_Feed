@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Login from './components/Login';
 import JoinMemberShip from './components/JoinMemberShip';
+import { app } from './firesbase';
 
 function App() {
   return (

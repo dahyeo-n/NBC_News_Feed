@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as S from './style/Login.style';
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [pw, setPw] = useState('');
+
   return (
     <main>
       <S.Section>
@@ -12,19 +15,25 @@ function Login() {
           <form>
             <S.InputWrapper>
               <S.InputStyle
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="이메일"
                 autoFocus="autofocus"
               />
-              {/* <S.Validation>*아이디를 입력해주세요.</S.Validation> */}
+              <S.Validation>올바른 이메일을 입력해주세요.</S.Validation>
             </S.InputWrapper>
             <S.InputWrapper>
               <S.InputStyle
+                value={pw}
+                onChange={(e) => setPw(e.target.value)}
                 type="password"
                 placeholder="password"
                 autoFocus="autofocus"
               />
-              {/* <S.Validation>*비밀번호를 입력해주세요.</S.Validation> */}
+              <S.Validation>
+                영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.
+              </S.Validation>
             </S.InputWrapper>
             <div>
               <S.ButtonStyle type="submit">로그인</S.ButtonStyle>
