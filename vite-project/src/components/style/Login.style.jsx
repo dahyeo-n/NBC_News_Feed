@@ -41,6 +41,11 @@ export const ButtonStyle = styled.button`
   font-size: 18px;
   border-color: transparent;
   margin-top: 20px;
+  &:disabled {
+    cursor: default;
+    background: #dadada;
+    color: white;
+  }
 `;
 export const Validation = styled.div`
   color: #ff0000;

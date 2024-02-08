@@ -1,10 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as S from './style/Login.style';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
+  const [emailValid, setEmailValid] = useState(false);
+  const [pwValid, setPwValid] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    if (emailValid && pwValid) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [emailValid, pwValid]);
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    const regex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if (regex.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+  const handlePw = (e) => {
+    setPw(e.target.value);
+    const regex =
+      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+    if (regex.test(pw)) {
+      setPwValid(true);
+    } else {
+      setPwValid(false);
+    }
+  };
 
   return (
     <main>
@@ -16,27 +48,35 @@ function Login() {
             <S.InputWrapper>
               <S.InputStyle
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmail}
                 type="email"
                 placeholder="이메일"
                 autoFocus="autofocus"
               />
-              <S.Validation>올바른 이메일을 입력해주세요.</S.Validation>
+              <S.Validation>
+                {!emailValid && email.length > 0 && (
+                  <div>올바른 이메일을 입력해주세요.</div>
+                )}
+              </S.Validation>
             </S.InputWrapper>
             <S.InputWrapper>
               <S.InputStyle
                 value={pw}
-                onChange={(e) => setPw(e.target.value)}
+                onChange={handlePw}
                 type="password"
                 placeholder="password"
                 autoFocus="autofocus"
               />
               <S.Validation>
-                영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.
+                {!pwValid && pw.length > 0 && (
+                  <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
+                )}
               </S.Validation>
             </S.InputWrapper>
             <div>
-              <S.ButtonStyle type="submit">로그인</S.ButtonStyle>
+              <S.ButtonStyle type="submit" disabled={disabled}>
+                로그인
+              </S.ButtonStyle>
             </div>
           </form>
           {/* form 파트 끝 부분 */}
