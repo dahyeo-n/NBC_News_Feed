@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+//이미지가 import가 안됨,사이즈 좀 줄이기
+//현재 브랜치 에서 커밋 푸쉬하면 PR해야 하는지
 export const Section = styled.section`
   display: flex;
   justify-content: center;
