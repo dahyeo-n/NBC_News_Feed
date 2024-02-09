@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as S from './style/Login.style';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firesbase';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -8,6 +10,8 @@ function LoginPage() {
   const [emailValid, setEmailValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
   const [disabled, setDisabled] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (emailValid && pwValid) {
@@ -37,9 +41,17 @@ function LoginPage() {
       setPwValid(false);
     }
   };
-  const signUpBtn = (e) => {
+  const signUpBtn = async (e) => {
     e.preventDefault();
-    confirm('로그인 성공~ `');
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, pw);
+      confirm('로그인 되었습니다.');
+      navigate('/');
+    } catch (error) {
+      alert('가입되지 않은 계정입니다.');
+      setEmail('');
+      setPw('');
+    }
   };
 
   return (
