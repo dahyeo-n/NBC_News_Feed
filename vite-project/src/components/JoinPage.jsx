@@ -3,32 +3,49 @@ import * as S from './style/JoinPage.style';
 
 function JoinPage() {
   const [emailTxt, setEmailTxt] = useState(''); // 이메일 텍스트
-  const [email, setEmail] = useState('naver.com'); // 이메일 주소
+  const [selectEmail, setSelectEmail] = useState('naver.com'); // 이메일 주소
   const [customEmail, setCustomEmail] = useState(false);
-  const [id, setId] = useState(''); //유저 id값
+  const [email, setEmail] = useState(''); //유저 id값
   const [nickName, setNickName] = useState(''); // 닉네임
   const [pw, setPw] = useState(''); //비밀번호
   const [pwCheck, setPwCheck] = useState(''); // 비밀번호 확인
   //밸리데이션
+  const [emailValid, setEmailValid] = useState(false);
+  const [nickNameValid, setNickNameValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
   const [pwCheckValid, setPwCheckValid] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
+  //데이터 영역
+  //이메일txt
   const emailTextHandler = (e) => {
     setEmailTxt(e.target.value);
+    if (e.target.value.length > 0) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
   };
+  //이메일select
   const emailHandler = (e) => {
     const selctEmail = e.target.value;
     if (selctEmail === '직접입력') {
       setCustomEmail(true);
     } else {
-      setEmail(selctEmail);
+      setSelectEmail(selctEmail);
     }
   };
-  const subBtn = (e) => {
-    e.preventDefault();
+  //닉네임
+  const nickNameHandler = (e) => {
+    setNickName(e.target.value);
+    if (e.target.value.length > 1) {
+      setNickNameValid(true);
+    } else {
+      setNickNameValid(false);
+    }
   };
-  const pwHandler = (e) => {
-    //change추가
+  //비밀번호
+  const pwChangeHandler = (e) => {
     setPw(e.target.value);
     const regex =
       /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
@@ -38,28 +55,38 @@ function JoinPage() {
       setPwValid(false);
     }
   };
+  //비밀번호 체크
   const pwCheckHandler = (e) => {
     setPwCheck(e.target.value);
   };
   useEffect(() => {
-    if (pw === pwCheck && pw !== '' && pwCheck !== '') {
+    if (pw === pwCheck) {
       setPwCheckValid(true);
     } else {
       setPwCheckValid(false);
     }
   }, [pw, pwCheck]);
-
+  //버튼 disabled
   useEffect(() => {
-    setId(`${emailTxt}@${email}`);
-  }, [emailTxt, email]);
-  const nickNameHandler = (e) => {
-    setNickName(e.target.value);
-  };
-  console.log(pw);
-  console.log(pwCheck);
-  console.log(pwCheckValid);
+    if (emailValid && nickNameValid && pwValid && pwCheckValid) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [emailValid, nickNameValid, pwValid, pwCheckValid]);
 
+  //회원가입 버튼
+  const subBtn = (e) => {
+    e.preventDefault();
+    confirm('성공!');
+  };
+  //넘겨줄 이메일값
+  useEffect(() => {
+    setEmail(`${emailTxt}@${selectEmail}`);
+  }, [emailTxt, selectEmail]);
+  console.log(emailValid);
   //join true로 넘겨줌
+
   return (
     <S.Section>
       <S.Parents>
@@ -87,10 +114,9 @@ function JoinPage() {
                 <S.CustomInput onChange={(e) => setEmail(e.target.value)} />
               )}
             </S.EmailForm>
-            {emailTxt.length < 0 ||
-              (emailTxt.length === 0 && (
-                <S.ValidationJoin>*이메일을 입력 해주세요.</S.ValidationJoin>
-              ))}
+            {!emailValid && (
+              <S.ValidationJoin>*이메일을 입력 해주세요.</S.ValidationJoin>
+            )}
           </S.BorderTop>
           {/* 정보입력 */}
           <S.UserBorder>
@@ -103,7 +129,7 @@ function JoinPage() {
                   onChange={nickNameHandler}
                 />
               </S.StyleP>
-              {nickName.length < 2 && (
+              {!nickNameValid && (
                 <S.ValidationJoin>
                   *두 글자 이상 입력 해주세요.
                 </S.ValidationJoin>
@@ -114,14 +140,17 @@ function JoinPage() {
             <S.Block>
               <S.StyleP>
                 <S.Label>비밀번호</S.Label>
-                <S.LabelInput type="password" value={pw} onChange={pwHandler} />
+                <S.LabelInput
+                  type="password"
+                  value={pw}
+                  onChange={pwChangeHandler}
+                />
               </S.StyleP>
-              {pw.length > 0 && !pwValid && (
+              {!pwValid && (
                 <S.ValidationJoin>
                   *영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.
                 </S.ValidationJoin>
               )}
-
               <S.StyleP>
                 <S.Label>비밀번호 확인</S.Label>
                 <S.LabelInput
@@ -130,12 +159,12 @@ function JoinPage() {
                   onChange={pwCheckHandler}
                 />
               </S.StyleP>
-              {!pwCheckValid && pwCheck.length > 0 && (
-                <S.ValidationJoin>*비밀번호가 다릅니다.</S.ValidationJoin>
+              {!pwCheckValid && (
+                <S.ValidationJoin>*비밀번호를 확인해주세요.</S.ValidationJoin>
               )}
             </S.Block>
           </S.BorderBottom>
-          <S.JoinBtn disabled={true} onClick={subBtn}>
+          <S.JoinBtn disabled={disabled} onClick={subBtn}>
             회원가입
           </S.JoinBtn>
         </S.Form>

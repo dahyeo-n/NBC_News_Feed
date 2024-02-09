@@ -37,6 +37,10 @@ function LoginPage() {
       setPwValid(false);
     }
   };
+  const signUpBtn = (e) => {
+    e.preventDefault();
+    confirm('로그인 성공~ `');
+  };
 
   return (
     <main>
@@ -74,7 +78,11 @@ function LoginPage() {
               </S.Validation>
             </S.InputWrapper>
             <div>
-              <S.ButtonStyle type="submit" disabled={disabled}>
+              <S.ButtonStyle
+                type="submit"
+                disabled={disabled}
+                onClick={signUpBtn}
+              >
                 로그인
               </S.ButtonStyle>
             </div>
