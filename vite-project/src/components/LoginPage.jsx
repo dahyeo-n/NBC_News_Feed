@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as S from './style/Login.style';
 
-function Login() {
+function LoginPage() {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [emailValid, setEmailValid] = useState(false);
@@ -21,7 +21,7 @@ function Login() {
     setEmail(e.target.value);
     const regex =
       /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    if (regex.test(email)) {
+    if (regex.test(e.target.value)) {
       setEmailValid(true);
     } else {
       setEmailValid(false);
@@ -31,7 +31,7 @@ function Login() {
     setPw(e.target.value);
     const regex =
       /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
-    if (regex.test(pw)) {
+    if (regex.test(e.target.value)) {
       setPwValid(true);
     } else {
       setPwValid(false);
@@ -84,7 +84,7 @@ function Login() {
           <S.JoinWrap>
             <ul>
               <li>
-                <Link to={'/join'}>회원가입</Link>
+                <Link to={'/joinpage'}>회원가입</Link>
               </li>
             </ul>
           </S.JoinWrap>
@@ -107,4 +107,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;

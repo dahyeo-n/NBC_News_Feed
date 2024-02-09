@@ -5,10 +5,10 @@ function Main() {
   return (
     <div>
       <div>
-        <Link to="/login">로그인</Link>
+        <Link to="/loginpage">로그인</Link>
       </div>
       <div>
-        <Link to="/join">회원가입</Link>
+        <Link to="/joinpage">회원가입</Link>
       </div>
     </div>
   );

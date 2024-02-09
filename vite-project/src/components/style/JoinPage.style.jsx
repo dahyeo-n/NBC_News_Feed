@@ -73,6 +73,15 @@ export const EmailSelect = styled.select`
   line-height: 40px;
   margin: 0 31px 0 5px;
 `;
+export const CustomInput = styled.input`
+  width: 33%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+  text-indent: 5px;
+  line-height: 37px;
+  margin-left: 5px;
+`;
 export const JoinBtn = styled.button`
   background: #0096d6;
   color: #fff;
