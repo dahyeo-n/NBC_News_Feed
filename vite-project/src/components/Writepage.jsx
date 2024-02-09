@@ -1,19 +1,28 @@
-import { useState } from 'react';
-import './App.css';
-import { auth } from './firebase';
-import { createUserWithEmailAndPassword } from '@firebase/auth';
-import { app } from './firebase';
+// App.js
+import { useEffect, useState } from 'react';
+import '../App.css';
+import { app } from '../firebase';
+import { auth } from '../firebase';
+import styled from 'styled-components';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 console.log(app);
-// import { useEffect } from 'react';
 
-//  const [count, setCount] = useState(0)
-// useEffect(() => {
-//   createUserWithEmailAndPassword(auth, 'test@gmail.com', '12341234');
-// }, []);
+const StFontColor = styled.div`
+  color: white;
+  font-weight: 200;
+`;
 
 const Writepage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // 로그인 중인 사용자 데이터 가져오는 법
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log('user', user);
+    });
+    // 현재 로그인한 유저의 정보 볼 수 있음: auth.currentUser
+  }, []);
 
   const onChange = (event) => {
     const {
@@ -27,32 +36,41 @@ const Writepage = () => {
     }
   };
 
-  const signUp = (event) => {
+  // 회원가입
+  const signUp = async (event) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('user', userCredential.user);
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('error with signUp', errorCode, errorMessage);
+    }
   };
 
-  const signIn = (event) => {
+  // 로그인
+  const signIn = async (event) => {
     event.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log('user with signIn', userCredential.user);
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('error with signUp', errorCode, errorMessage);
+    }
   };
 
-  const logOut = (event) => {
+  // 로그아웃
+  const logOut = async (event) => {
     event.preventDefault();
+    await signOut(auth);
   };
 
   return (
-    <div className="App">
+    <StFontColor className="App">
       <h2>로그인 페이지</h2>
       <form>
         <div>
@@ -67,7 +85,7 @@ const Writepage = () => {
         <button onClick={signIn}>로그인</button>
         <button onClick={logOut}>로그아웃</button>
       </form>
-    </div>
+    </StFontColor>
   );
 };
 
