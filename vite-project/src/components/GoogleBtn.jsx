@@ -1,8 +1,9 @@
-import React from 'react';
+import GoogleImg from '../components/image/google.png';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '../firesbase';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { SocialBtn } from './style/SocialLogin.style';
 
 const GoogleBtn = () => {
   const navigate = useNavigate();
@@ -39,7 +40,11 @@ const GoogleBtn = () => {
         console.log(err);
       });
   };
-  return <button onClick={handleGoogleLogin}>구글로 로그인</button>;
+  return (
+    <SocialBtn onClick={handleGoogleLogin}>
+      <img src={GoogleImg} alt="구글 로그인" />
+    </SocialBtn>
+  );
 };
 
 export default GoogleBtn;

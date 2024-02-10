@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../firesbase';
 import { useNavigate } from 'react-router-dom';
 import { addDoc, collection } from 'firebase/firestore';
+import { MainStyle } from './style/Login.style';
 
 function JoinPage() {
   const [emailTxt, setEmailTxt] = useState(''); // 이메일 텍스트
@@ -113,88 +114,90 @@ function JoinPage() {
   }, [emailTxt, selectEmail]);
 
   return (
-    <S.Section>
-      <S.Parents>
-        <S.Title>JOIN</S.Title>
-        <S.Form>
-          <S.BorderTop>
-            <S.EmailForm>
-              <S.EmailLabel>E-mail</S.EmailLabel>
-              <S.EmailInput
-                value={emailTxt}
-                onChange={emailTextHandler}
-                type="text"
-              />
-              @
-              {!customEmail ? (
-                <S.EmailSelect name="domain" onChange={emailHandler}>
-                  <option value={'naver.com'}>naver.com</option>
-                  <option value={'gmail.com'}>gmail.com</option>
-                  <option value={'daum.net'}>daum.net</option>
-                  <option value={'nate.com'}>nate.com</option>
-                  <option value={'직접입력'}>직접입력</option>
-                  {/* label 직접입력 선택시 input으로 바뀌기, onChange로 인풋 값 받기 */}
-                </S.EmailSelect>
-              ) : (
-                <S.CustomInput onChange={(e) => setEmail(e.target.value)} />
-              )}
-            </S.EmailForm>
-            {!emailValid && (
-              <S.ValidationJoin>*이메일을 입력 해주세요.</S.ValidationJoin>
-            )}
-          </S.BorderTop>
-          {/* 정보입력 */}
-          <S.UserBorder>
-            <S.Block>
-              <S.StyleP>
-                <S.Label>닉네임</S.Label>
-                <S.LabelInput
+    <MainStyle>
+      <S.Section>
+        <S.Parents>
+          <S.Title>JOIN</S.Title>
+          <S.Form>
+            <S.BorderTop>
+              <S.EmailForm>
+                <S.EmailLabel>E-mail</S.EmailLabel>
+                <S.EmailInput
+                  value={emailTxt}
+                  onChange={emailTextHandler}
                   type="text"
-                  value={nickName}
-                  onChange={nickNameHandler}
                 />
-              </S.StyleP>
-              {!nickNameValid && (
-                <S.ValidationJoin>
-                  *두 글자 이상 입력 해주세요.
-                </S.ValidationJoin>
+                @
+                {!customEmail ? (
+                  <S.EmailSelect name="domain" onChange={emailHandler}>
+                    <option value={'naver.com'}>naver.com</option>
+                    <option value={'gmail.com'}>gmail.com</option>
+                    <option value={'daum.net'}>daum.net</option>
+                    <option value={'nate.com'}>nate.com</option>
+                    <option value={'직접입력'}>직접입력</option>
+                    {/* label 직접입력 선택시 input으로 바뀌기, onChange로 인풋 값 받기 */}
+                  </S.EmailSelect>
+                ) : (
+                  <S.CustomInput onChange={(e) => setEmail(e.target.value)} />
+                )}
+              </S.EmailForm>
+              {!emailValid && (
+                <S.ValidationJoin>*이메일을 입력 해주세요.</S.ValidationJoin>
               )}
-            </S.Block>
-          </S.UserBorder>
-          <S.BorderBottom>
-            <S.Block>
-              <S.StyleP>
-                <S.Label>비밀번호</S.Label>
-                <S.LabelInput
-                  type="password"
-                  value={pw}
-                  onChange={pwChangeHandler}
-                />
-              </S.StyleP>
-              {!pwValid && (
-                <S.ValidationJoin>
-                  *영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.
-                </S.ValidationJoin>
-              )}
-              <S.StyleP>
-                <S.Label>비밀번호 확인</S.Label>
-                <S.LabelInput
-                  type="password"
-                  value={pwCheck}
-                  onChange={pwCheckHandler}
-                />
-              </S.StyleP>
-              {!pwCheckValid && (
-                <S.ValidationJoin>*비밀번호를 확인해주세요.</S.ValidationJoin>
-              )}
-            </S.Block>
-          </S.BorderBottom>
-          <S.JoinBtn disabled={disabled} onClick={subBtn}>
-            회원가입
-          </S.JoinBtn>
-        </S.Form>
-      </S.Parents>
-    </S.Section>
+            </S.BorderTop>
+            {/* 정보입력 */}
+            <S.UserBorder>
+              <S.Block>
+                <S.StyleP>
+                  <S.Label>닉네임</S.Label>
+                  <S.LabelInput
+                    type="text"
+                    value={nickName}
+                    onChange={nickNameHandler}
+                  />
+                </S.StyleP>
+                {!nickNameValid && (
+                  <S.ValidationJoin>
+                    *두 글자 이상 입력 해주세요.
+                  </S.ValidationJoin>
+                )}
+              </S.Block>
+            </S.UserBorder>
+            <S.BorderBottom>
+              <S.Block>
+                <S.StyleP>
+                  <S.Label>비밀번호</S.Label>
+                  <S.LabelInput
+                    type="password"
+                    value={pw}
+                    onChange={pwChangeHandler}
+                  />
+                </S.StyleP>
+                {!pwValid && (
+                  <S.ValidationJoin>
+                    *영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.
+                  </S.ValidationJoin>
+                )}
+                <S.StyleP>
+                  <S.Label>비밀번호 확인</S.Label>
+                  <S.LabelInput
+                    type="password"
+                    value={pwCheck}
+                    onChange={pwCheckHandler}
+                  />
+                </S.StyleP>
+                {!pwCheckValid && (
+                  <S.ValidationJoin>*비밀번호를 확인해주세요.</S.ValidationJoin>
+                )}
+              </S.Block>
+            </S.BorderBottom>
+            <S.JoinBtn disabled={disabled} onClick={subBtn}>
+              회원가입
+            </S.JoinBtn>
+          </S.Form>
+        </S.Parents>
+      </S.Section>
+    </MainStyle>
   );
 }
 

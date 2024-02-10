@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 //이미지가 import가 안됨,사이즈 좀 줄이기
 //현재 브랜치 에서 커밋 푸쉬하면 PR해야 하는지
+export const MainStyle = styled.main`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+`;
 export const Section = styled.section`
   display: flex;
   justify-content: center;
@@ -14,7 +20,7 @@ export const H2 = styled.h2`
   padding-bottom: 30px;
 `;
 export const Wrapper = styled.div`
-  width: 530px;
+  width: 500px;
   font-size: 16px;
 `;
 export const InputWrapper = styled.div`
@@ -65,9 +71,6 @@ export const EtcLoginWrap = styled.div`
 `;
 
 export const EtcLoginUl = styled.ul`
-  display: flex;
-  gap: 25px;
   padding-top: 27px;
   height: 40px;
-  justify-content: center;
 `;

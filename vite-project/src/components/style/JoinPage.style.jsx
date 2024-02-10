@@ -108,5 +108,5 @@ export const ValidationJoin = styled.div`
   display: flex;
   text-indent: 15px;
   font-size: 10px;
-  margin-top: 5px;
+  margin: 5px 0 0 100px;
 `;

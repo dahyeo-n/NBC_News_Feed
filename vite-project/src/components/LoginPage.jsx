@@ -4,6 +4,7 @@ import * as S from './style/Login.style';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firesbase';
 import GoogleBtn from './GoogleBtn';
+import GitHub from './GitHub';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -53,11 +54,12 @@ function LoginPage() {
       alert('가입되지 않은 계정입니다.');
       setEmail('');
       setPw('');
+      setDisabled(true);
     }
   };
 
   return (
-    <main>
+    <S.MainStyle>
       <S.Section>
         {/* 로그인,비번 최상위 부모 */}
         <S.Wrapper>
@@ -119,13 +121,13 @@ function LoginPage() {
                 <GoogleBtn />
               </li>
               <li>
-                <button>깃허브 로그인</button>
+                <GitHub />
               </li>
             </S.EtcLoginUl>
           </S.EtcLoginWrap>
         </S.Wrapper>
       </S.Section>
-    </main>
+    </S.MainStyle>
   );
 }
 
