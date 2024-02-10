@@ -1,18 +1,19 @@
 // App.js
 import { useEffect, useState } from 'react';
-import '../App.css';
 import { app } from '../firebase';
 import { auth } from '../firebase';
+import { db } from '../firebase';
 import styled from 'styled-components';
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { collection, getDocs } from 'firebase/firestore';
 console.log(app);
 
 const StFontColor = styled.div`
-  color: white;
+  color: black;
   font-weight: 200;
 `;
 
-const Writepage = () => {
+const WritePage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,6 +23,17 @@ const Writepage = () => {
       console.log('user', user);
     });
     // 현재 로그인한 유저의 정보 볼 수 있음: auth.currentUser
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // 특정 컬렉션의 프로젝트와 연결된 db, 컬렉션 이름이 posts인 문서를 가져온다
+      const querySnapshot = await getDocs(collection(db, 'posts'));
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+      });
+    };
+    fetchData();
   }, []);
 
   const onChange = (event) => {
@@ -59,7 +71,7 @@ const Writepage = () => {
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log('error with signUp', errorCode, errorMessage);
+      console.log('error with signIn', errorCode, errorMessage); // 오류 메시지 정정
     }
   };
 
@@ -89,4 +101,4 @@ const Writepage = () => {
   );
 };
 
-export default Writepage;
+export default WritePage;

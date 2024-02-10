@@ -4,7 +4,7 @@ import { app } from '../firebase';
 console.log(app);
 
 const StFontColor = styled.div`
-  color: white;
+  color: black;
   font-weight: 200;
 `;
 
@@ -12,6 +12,9 @@ function Main() {
   return (
     <StFontColor>
       메인입니다
+      <Link to={'/auth'}>로그인</Link>
+      <Link to={'/todo'}>To do list</Link>
+      <Link to={'/fileupload'}>이미지 업로드</Link>
       <Link to={'/mypage'}>마이페이지로 가기</Link>
       <Link to={'/writepage'}>게시글 작성하기</Link>
     </StFontColor>

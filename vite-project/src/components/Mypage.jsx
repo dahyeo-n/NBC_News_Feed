@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StFontColor = styled.div`
-  color: white;
+  color: black;
   font-weight: 200;
 `;
 
