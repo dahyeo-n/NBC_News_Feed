@@ -21,7 +21,7 @@ function Main() {
         setCurruntUserEmail(null);
       }
     });
-  }, []);
+  }, [data]);
   //db데이터 가져오기
   useEffect(() => {
     if (!currentUserEmail) return;
