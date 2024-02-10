@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as S from './style/JoinPage.style';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firesbase';
+import { auth, db } from '../firesbase';
 import { useNavigate } from 'react-router-dom';
+import { addDoc, collection } from 'firebase/firestore';
 
 function JoinPage() {
   const [emailTxt, setEmailTxt] = useState(''); // 이메일 텍스트
@@ -20,6 +21,14 @@ function JoinPage() {
   const [disabled, setDisabled] = useState(true);
 
   const navigate = useNavigate();
+
+  //파이어베이스 데이터 추가
+  const addUser = async () => {
+    const newUser = { email: email, nickName: nickName };
+    const collectionRef = collection(db, 'users');
+    await addDoc(collectionRef, newUser);
+    console.log('파이어베이스 확인해봐요');
+  };
 
   //데이터 영역
   //이메일txt
@@ -83,18 +92,21 @@ function JoinPage() {
   //회원가입 버튼
   const subBtn = async (e) => {
     e.preventDefault();
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         pw
       );
+      addUser();
       confirm('회원가입 성공!');
       navigate('/');
     } catch (error) {
       console.log(error);
     }
   };
+
   //이메일값
   useEffect(() => {
     setEmail(`${emailTxt}@${selectEmail}`);

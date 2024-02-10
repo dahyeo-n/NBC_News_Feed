@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as S from './style/Login.style';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firesbase';
+import GoogleBtn from './GoogleBtn';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ function LoginPage() {
   const [emailValid, setEmailValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
   const [disabled, setDisabled] = useState(true);
+  const [userData, setUserData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -114,10 +116,10 @@ function LoginPage() {
             <p>or</p>
             <S.EtcLoginUl>
               <li>
-                <Link to={''}>구글 로그인</Link>
+                <GoogleBtn />
               </li>
               <li>
-                <Link to={''}>깃허브 로그인</Link>
+                <button>깃허브 로그인</button>
               </li>
             </S.EtcLoginUl>
           </S.EtcLoginWrap>
