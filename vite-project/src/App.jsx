@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import Auth from './components/Auth';
-import Todo from './components/Todo';
 import FileUpload from './components/FileUpload';
 
 const StFontColor = styled.div`
@@ -28,7 +27,6 @@ const App = () => {
       <StFontColor>
         <Routes>
           <Route path="/auth" element={<Auth />} />
-          <Route path="/todo" element={<Todo />} />
           <Route path="/fileupload" element={<FileUpload />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />

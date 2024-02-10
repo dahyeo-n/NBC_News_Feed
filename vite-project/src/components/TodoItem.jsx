@@ -20,7 +20,7 @@ const TodoItem = ({ todo, setTodos }) => {
     }
   };
 
-  //deleteeDoc을 사용하여 게시글 삭제
+  //deleteDoc을 사용하여 게시글 삭제
   const deleteTodo = async (event) => {
     const postRef = doc(db, 'posts', todo.id);
     await deleteDoc(postRef);
