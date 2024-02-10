@@ -87,7 +87,6 @@ video {
     padding: 0;
     border: 0;
     font-size: 100%;
-    font: inherit;
     vertical-align: baseline;
 }
 article,
@@ -146,11 +145,21 @@ a {
     color: #333;
 }
 
-input,
-button {
+input {
     border: none;
     background: none;
     outline: none;
+    font-size: large;
+    color: black;
+}
+
+button {
+    border: none;
+    margin: 8px;
+    padding: 7px;
+    font-size: medium;
+    color: black;
+    border-radius: 10px;
 }
 
 .hidden {
