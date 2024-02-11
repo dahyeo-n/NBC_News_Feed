@@ -5,7 +5,7 @@ import { SocialBtn } from './style/SocialLogin.style';
 function GitHub() {
   return (
     <SocialBtn>
-      <img src={GitHubImg} alt="깃허브 로그인" />
+      <img src={GitHubImg} alt="깃허브로 로그인" />
     </SocialBtn>
   );
 }

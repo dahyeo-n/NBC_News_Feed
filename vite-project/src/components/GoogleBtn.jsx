@@ -42,7 +42,7 @@ const GoogleBtn = () => {
   };
   return (
     <SocialBtn onClick={handleGoogleLogin}>
-      <img src={GoogleImg} alt="구글 로그인" />
+      <img src={GoogleImg} alt="구글로 로그인" />
     </SocialBtn>
   );
 };
