@@ -4,7 +4,7 @@ import * as S from './style/Login.style';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firesbase';
 import GoogleBtn from './GoogleBtn';
-import GitHub from './GitHub';
+import GitHubBtn from './GitHubBtn';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,7 +12,6 @@ function LoginPage() {
   const [emailValid, setEmailValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const [userData, setUserData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -121,7 +120,7 @@ function LoginPage() {
                 <GoogleBtn />
               </li>
               <li>
-                <GitHub />
+                <GitHubBtn />
               </li>
             </S.EtcLoginUl>
           </S.EtcLoginWrap>
