@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, storage } from '../firebase';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const StHeader = styled.header`
   background-color: white;
@@ -105,74 +106,66 @@ const WritePage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingPostId, setEditingPostId] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
-  const startEditPost = (post) => {
-    setTitle(post.title);
-    setContent(post.content);
-    setIsEditing(true);
-    setEditingPostId(post.id);
-  };
-  console.log(startEditPost);
-
-  // Firebase에서 데이터 가져오기
   useEffect(() => {
-    const fetchData = async () => {
-      // posts라는 이름으로 되어있는 컬렉션의 쿼리값 가져옴
-      // 쿼리값을 토대로 가져온 다큐먼트들을 '쿼리스냅샷'으로 담음
-      // getDocs 메서드를 통해 collection에 있는 모든 다큐먼트 가져옴
-      const querySnapshot = await getDocs(collection(db, 'posts'));
-
-      // 최초 게시물을 배열로 선언
-      // doc에 메타 데이터까지 들어가있기 때문에 실제 데이터는 doc.data로 가져올 수 있음
-      // querySnapshot에 들어가있는 모든 doc에 대해서 initialPosts값을 추가한 다음,
-      // initialPosts를 setPosts를 통해서 값을 넣어줌
-      const initialPosts = querySnapshot.docs.map((doc) => ({
-        // doc에 id값을 추가해서 posts 추가
-        id: doc.id,
-        ...doc.data()
-      }));
-      setPosts(initialPosts);
+    const fetchPost = async () => {
+      if (id) {
+        setIsLoading(true);
+        const docRef = doc(db, 'posts', id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setTitle(docSnap.data().title);
+          setContent(docSnap.data().content);
+        } else {
+          alert('게시물이 존재하지 않습니다.');
+          navigate('/');
+        }
+        setIsLoading(false);
+      }
     };
-    fetchData();
-  }, []);
+    fetchPost();
+  }, [id, navigate]);
 
-  // addDoc으로 데이터 추가, updateDoc으로 수정 로직
-  // async - await 공부하기
-  const addOrEditPost = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Firestore에 데이터 추가
-    // 어느 collection의 문서를 가져올지 지정, 2번째 인자로 어떤 값을 추가할지 지정
-    // 코드를 작성할 때 비동기 함수를 사용하는 경우, 항상 try...catch 블록을 사용하여 예외 처리를 해주는 것이 좋음
-    if (!title.trim() || !content.trim()) return; // 빈 제목 또는 내용 방지
+    setIsLoading(true);
 
     try {
-      if (isEditing) {
-        // 글 수정 로직
-        const postRef = doc(db, 'posts', editingPostId);
-        await updateDoc(postRef, { title, content });
-        alert('게시물이 수정되었습니다!');
-      } else {
-        // 새 글 추가 로직
-        await addDoc(collection(db, 'posts'), {
+      let imageUrl = '';
+      if (selectedFile) {
+        const fileRef = ref(storage, `uploads/${selectedFile.name}`);
+        const uploadResult = await uploadBytes(fileRef, selectedFile);
+        imageUrl = await getDownloadURL(uploadResult.ref);
+      }
+
+      if (id) {
+        // 기존 게시글 수정
+        await updateDoc(doc(db, 'posts', id), {
           title,
           content,
-          createdAt: Timestamp.now(),
-          isDone: false
+          ...(imageUrl && { imageUrl })
         });
-        alert('게시물이 추가되었습니다!');
+        alert('게시물이 수정되었습니다!');
+      } else {
+        // 새 게시글 작성
+        await addDoc(collection(db, 'posts'), {
+          // email
+          title,
+          content,
+          imageUrl,
+          createdAt: Timestamp.now()
+        });
+        alert('새 게시물이 추가되었습니다!');
       }
-      // 상태 초기화
-      setTitle('');
-      setContent('');
-      setIsEditing(false);
-      setEditingPostId(null);
-      // 글 목록 갱신
-      // fetchPosts();
     } catch (error) {
-      console.error('Error adding/editing document: ', error);
+      console.error('게시물 저장 실패: ', error);
+      alert('게시물 저장에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+      navigate('/');
     }
   };
 
@@ -242,8 +235,8 @@ const WritePage = () => {
   return (
     <StHeader>
       <StPageWide>
-        <h1>Header 넣어야 함</h1>
-        <form onSubmit={addOrEditPost}>
+        <h1>{id ? '게시글 수정' : '새 게시글 작성'}</h1>
+        <form onSubmit={handleSubmit}>
           <div>
             {/* 제목 입력 구간 */}
             <StTitleWriteBox
@@ -310,7 +303,6 @@ const WritePage = () => {
               </div>
             ))}
         </div>
-        <div></div>
       </StPageWide>
     </StHeader>
   );

@@ -6,6 +6,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, storage } from '../firebase';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const StHeader = styled.header`
   background-color: white;
@@ -251,6 +252,7 @@ const DetailPage = () => {
       console.error('Error updating document: ', error);
     }
   };
+  console.log(updatePost);
 
   // deleteDoc을 사용하여 게시글 삭제
   const deletePost = async (id) => {
@@ -274,6 +276,12 @@ const DetailPage = () => {
       setEditingPostId(null);
     }
     // 사용자가 취소를 누른 경우, 아무것도 안 함
+  };
+
+  // Edit button Logic
+  const navigate = useNavigate();
+  const moveToWritePage = (id) => {
+    navigate(`/writepage/${id}`);
   };
 
   return (
@@ -324,7 +332,7 @@ const DetailPage = () => {
           {/* Working Section */}
           <h1>상세 페이지 글</h1>
           {posts
-            .filter((post) => !post.isDone)
+            .filter((post) => !post.isDone) // Main Page에 들어가야 할 로직
             .map((post) => (
               <div key={post.id}>
                 <StTitleWriteBox2>
@@ -335,7 +343,8 @@ const DetailPage = () => {
                 <StContentWriteBox2>{post.content}</StContentWriteBox2>
                 <StWriteCancleCompleteBtn>
                   {/* 첫 작성일 때랑 수정일 때랑 다르게(삼항연산자) */}
-                  <button onClick={() => updatePost(post.id)}>Edit</button>
+                  {/* .filter((post) => !post.isDone) // post.email === !post.email) */}
+                  <button onClick={() => moveToWritePage(post.id)}>Edit</button>
                   <button onClick={() => deletePost(post.id)}>Delete</button>
                 </StWriteCancleCompleteBtn>
               </div>

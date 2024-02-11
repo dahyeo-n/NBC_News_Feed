@@ -33,7 +33,7 @@ const App = () => {
           <Route path="/fileupload" element={<FileUpload />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/writepage" element={<WritePage posts={posts} setPosts={setPosts} />} />
+          <Route path="/writepage/:id" element={<WritePage posts={posts} setPosts={setPosts} />} />
           <Route path="/detailpage" element={<DetailPage posts={posts} setPosts={setPosts} />} />
         </Routes>
       </StFontColor>
