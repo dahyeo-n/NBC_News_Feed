@@ -110,14 +110,13 @@ function JoinPage() {
   const subBtn = async (e) => {
     e.preventDefault();
     try {
+      addUser(email, nickName);
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         pw
       );
-      addUser(email, nickName);
     } catch (error) {
-      alert('이미 사용중인 계정입니다');
       setEmailTxt('');
       setEmailValid(false);
     }
