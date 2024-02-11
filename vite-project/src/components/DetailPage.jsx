@@ -27,7 +27,7 @@ const StPageWide = styled.div`
   padding: auto;
   background-color: white;
   border-radius: 10px;
-  font-size: large;
+  font-size: x-large;
 `;
 
 const StTitleWriteBox = styled.input`
@@ -47,6 +47,19 @@ const StTitleWriteBox = styled.input`
   }
 `;
 
+const StTitleWriteBox2 = styled.div`
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  padding: 15px;
+  margin: 20px 10px 0px 10px;
+  border-radius: 10px;
+  background-color: gainsboro;
+  font-size: larger;
+  font-weight: 600;
+`;
+
 const StContentWriteBox = styled.input`
   width: 1000px;
   height: 200px;
@@ -54,12 +67,35 @@ const StContentWriteBox = styled.input`
   margin: 20px 10px 0px 10px;
   border-radius: 10px;
   background-color: gainsboro;
-  font-size: larger;
+  font-size: x-large;
   font-weight: 600;
   text-align: center;
   &::placeholder {
     color: black;
   }
+`;
+
+const StContentWriteBox2 = styled.div`
+  width: 1000px;
+  height: 200px;
+  padding: 15px;
+  margin: 20px 10px 0px 10px;
+  border-radius: 10px;
+  background-color: gainsboro;
+  font-size: x-large;
+  font-weight: 600;
+  align-items: baseline;
+`;
+
+const StBoxWithImage = styled.div`
+  width: 1000px;
+  height: 230px;
+  padding: 15px;
+  margin: 20px 10px 0px 10px;
+  background-color: gainsboro;
+  font-size: x-large;
+  font-weight: 600;
+  align-items: baseline;
 `;
 
 const StImageText = styled.div`
@@ -100,7 +136,7 @@ const StWriteCancleCompleteBtn = styled.div`
   margin: 20px 10px 0px 0px;
 `;
 
-const WritePage = () => {
+const DetailPage = () => {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -131,7 +167,9 @@ const WritePage = () => {
       const initialPosts = querySnapshot.docs.map((doc) => ({
         // doc에 id값을 추가해서 posts 추가
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
+        // createdAt을 적절한 날짜 형식으로 변환
+        createdAt: doc.data().createdAt?.toDate().toLocaleString()
       }));
       setPosts(initialPosts);
     };
@@ -139,7 +177,7 @@ const WritePage = () => {
   }, []);
 
   // addDoc으로 데이터 추가, updateDoc으로 수정 로직
-  // async - await 공부하기
+  // async - await 더 공부하기
   const addOrEditPost = async (event) => {
     event.preventDefault();
 
@@ -169,8 +207,7 @@ const WritePage = () => {
       setContent('');
       setIsEditing(false);
       setEditingPostId(null);
-      // 글 목록 갱신
-      // fetchPosts();
+      fetchData(); // 여기서 fetchData를 호출하여 게시물 목록 갱신
     } catch (error) {
       console.error('Error adding/editing document: ', error);
     }
@@ -279,34 +316,28 @@ const WritePage = () => {
               <button type="button" onClick={cancelBtnhandler}>
                 Cancle
               </button>
-              <button type="submit">Complete</button>{' '}
+              <button type="submit">Complete</button>
             </StWriteCancleCompleteBtn>
           </div>
         </form>
         <div>
           {/* Working Section */}
-          <h3>Working</h3>
+          <h1>상세 페이지 글</h1>
           {posts
             .filter((post) => !post.isDone)
             .map((post) => (
               <div key={post.id}>
-                <span>{post.title}</span>
-                <span>{post.content}</span>
-                {/* 첫 작성일 때랑 수정일 때랑 다르게(삼항연산자) */}
-                <button onClick={() => updatePost(post.id)}>완료</button>
-                <button onClick={() => deletePost(post.id)}>삭제</button>
-              </div>
-            ))}
-          {/* Done Section */}
-          <h3>Done</h3>
-          {posts
-            .filter((post) => post.isDone)
-            .map((post) => (
-              <div key={post.id}>
-                <span>{post.title}</span>
-                <span>{post.content}</span>
-                <button onClick={() => updatePost(post.id)}>취소</button>
-                <button onClick={() => deletePost(post.id)}>삭제</button>
+                <StTitleWriteBox2>
+                  <div>{post.title}</div>
+                  <div>Nickname | {post.createdAt}</div>
+                </StTitleWriteBox2>
+                <StBoxWithImage>Image</StBoxWithImage>
+                <StContentWriteBox2>{post.content}</StContentWriteBox2>
+                <StWriteCancleCompleteBtn>
+                  {/* 첫 작성일 때랑 수정일 때랑 다르게(삼항연산자) */}
+                  <button onClick={() => updatePost(post.id)}>Edit</button>
+                  <button onClick={() => deletePost(post.id)}>Delete</button>
+                </StWriteCancleCompleteBtn>
               </div>
             ))}
         </div>
@@ -316,4 +347,4 @@ const WritePage = () => {
   );
 };
 
-export default WritePage;
+export default DetailPage;

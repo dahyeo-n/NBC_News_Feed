@@ -16,6 +16,7 @@ function Main() {
       <Link to={'/fileupload'}>이미지 업로드</Link>
       <Link to={'/mypage'}>마이페이지로 가기</Link>
       <Link to={'/writepage'}>새 게시글 작성</Link>
+      <Link to={'/detailpage'}>상세 페이지</Link>
     </StFontColor>
   );
 }

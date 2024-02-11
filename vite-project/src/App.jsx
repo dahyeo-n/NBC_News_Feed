@@ -1,10 +1,11 @@
 import MainPage from './components/MainPage';
 import MyPage from './components/MyPage';
-import WritePage from './components/WritePage';
+import WritePage from './components/Writepage';
+import DetailPage from './components/DetailPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import Auth from './components/Auth';
@@ -16,9 +17,11 @@ const StFontColor = styled.div`
 `;
 
 const App = () => {
+  const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log('user', user); // 사용자 인증 정보가 변경될 때마다 해당 이벤트를 받아 처리합니다.
+      console.log('user', user); // 사용자 인증 정보가 변경될 때마다 해당 이벤트를 받아 처리
     });
   }, []);
 
@@ -30,7 +33,8 @@ const App = () => {
           <Route path="/fileupload" element={<FileUpload />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/writepage" element={<WritePage />} />
+          <Route path="/writepage" element={<WritePage posts={posts} setPosts={setPosts} />} />
+          <Route path="/detailpage" element={<DetailPage posts={posts} setPosts={setPosts} />} />
         </Routes>
       </StFontColor>
     </Router>
