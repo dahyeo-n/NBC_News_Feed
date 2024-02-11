@@ -3,7 +3,14 @@ import * as S from './style/JoinPage.style';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../firesbase';
 import { useNavigate } from 'react-router-dom';
-import { addDoc, collection } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 import { MainStyle } from './style/Login.style';
 
 function JoinPage() {
@@ -24,11 +31,20 @@ function JoinPage() {
   const navigate = useNavigate();
 
   //파이어베이스 데이터 추가
-  const addUser = async () => {
-    const newUser = { email: email, nickName: nickName };
-    const collectionRef = collection(db, 'users');
-    await addDoc(collectionRef, newUser);
-    console.log('파이어베이스 확인해봐요');
+  const addUser = async (email, nickName) => {
+    console.log(email, nickName);
+    const userRef = collection(db, 'users');
+    const userQuery = query(userRef, where('email', '==', email));
+    const querySnapshot = await getDocs(userQuery);
+    if (querySnapshot.size === 0) {
+      const newUser = { email: email, nickName: nickName };
+      const collectionRef = collection(db, 'users');
+      await addDoc(collectionRef, newUser);
+      confirm('회원가입 성공!');
+      navigate('/loginpage');
+    } else {
+      alert('이미 가입 된 이메일 입니다.');
+    }
   };
 
   //데이터 영역
@@ -93,18 +109,17 @@ function JoinPage() {
   //회원가입 버튼
   const subBtn = async (e) => {
     e.preventDefault();
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         pw
       );
-      addUser();
-      confirm('회원가입 성공!');
-      navigate('/');
+      addUser(email, nickName);
     } catch (error) {
-      console.log(error);
+      alert('이미 사용중인 계정입니다');
+      setEmailTxt('');
+      setEmailValid(false);
     }
   };
 
