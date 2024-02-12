@@ -32,7 +32,6 @@ function JoinPage() {
 
   //파이어베이스 데이터 추가
   const addUser = async (email, nickName) => {
-    console.log(email, nickName);
     const userRef = collection(db, 'users');
     const userQuery = query(userRef, where('email', '==', email));
     const querySnapshot = await getDocs(userQuery);

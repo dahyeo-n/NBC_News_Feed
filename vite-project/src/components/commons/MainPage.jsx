@@ -1,11 +1,14 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { db } from '../firesbase';
+import { db } from '../../firesbase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '../firesbase';
+import { auth } from '../../firesbase';
+import Header from './Header';
+import User from './User';
+import Card from './Card';
 
-function Main() {
+function MainPage() {
   const [data, setData] = useState([]);
   const [check, setCheck] = useState(false);
   const [currentUserEmail, setCurruntUserEmail] = useState(null);
@@ -49,28 +52,11 @@ function Main() {
 
   return (
     <div>
-      {!check && (
-        <>
-          <div>
-            <Link to="/loginpage">로그인</Link>
-          </div>
-          <div>
-            <Link to="/joinpage">회원가입</Link>
-          </div>
-        </>
-      )}
-
-      {check &&
-        data.map((item) => {
-          return (
-            <div key={item.id}>
-              <div>{item.nickName}님 환영합니다.</div>
-              <button onClick={outBtn}>로그아웃</button>
-            </div>
-          );
-        })}
+      <Header />
+      <User />
+      <Card />
     </div>
   );
 }
 
-export default Main;
+export default MainPage;
