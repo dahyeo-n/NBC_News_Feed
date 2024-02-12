@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { db } from '../../firesbase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -14,55 +14,43 @@ function MainPage() {
   const [currentUser, setCurrentUser] = useState(null);
   const [authInfo, setAuthInfo] = useState(null);
   const [posts, setPosts] = useState(null);
-
+  const [localUser, setLocalUser] = useState();
   //로그인체크
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user !== null) {
         setCheck(true);
         setCurrentUser({ email: user.email, nickName: user.displayName });
+        setLocalUser(user.email);
         setAuthInfo(auth);
       } else {
         setCheck(false);
         setCurrentUser(null);
       }
     });
-  }, [data]);
+  }, []);
 
-  // //db데이터 가져오기
-  // useEffect(() => {
-  //   if (!currentUserEmail) return;
-  //   const fetchData = async () => {
-  //     const q = query(
-  //       collection(db, 'users'),
-  //       //fireStore 조건문
-  //       where('email', '==', currentUserEmail)
-  //     );
-  //     const querySnapshot = await getDocs(q);
+  //로컬유저 정보 가져오기
+  useEffect(() => {
+    if (!localUser) return;
+    const fetchData = async () => {
+      const q = query(
+        collection(db, 'users'),
+        //fireStore 조건문
+        where('email', '==', localUser)
+      );
+      const querySnapshot = await getDocs(q);
 
-  //     let userData = [];
+      let userData = [];
 
-  //     querySnapshot.forEach((doc) => {
-  //       userData.push({ id: doc.id, ...doc.data() });
-  //     });
-  //     setData(userData);
-  //   };
-  //   fetchData();
-  // }, [currentUserEmail]);
+      querySnapshot.forEach((doc) => {
+        userData.push({ id: doc.id, ...doc.data() });
+      });
+      setData(userData);
+    };
+    fetchData();
+  }, [localUser]);
 
-  //
-
-  // const fetchPostshData = async () => {
-  //   const q = query(collection(db, 'posts'));
-  //   const querySnapshot = await getDocs(q);
-  //   const initialData = [];
-
-  //   querySnapshot.forEach((doc) => {
-  //     initialData.push({ id: doc.id, ...doc.data() });
-
-  //     setPosts(initialData);
-  //   });
-  // };
   useEffect(() => {
     const fetchData = async () => {
       let storeData = [];
@@ -84,7 +72,12 @@ function MainPage() {
       <Parents>
         <Wrapper>
           <UserSection>
-            <User check={check} authInfo={authInfo} currentUser={currentUser} />
+            <User
+              check={check}
+              authInfo={authInfo}
+              currentUser={currentUser}
+              data={data}
+            />
           </UserSection>
           <CardSection>{posts !== null && <Card posts={posts} />}</CardSection>
         </Wrapper>

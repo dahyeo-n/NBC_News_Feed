@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOut } from 'firebase/auth';
 
-function User({ check, authInfo, currentUser }) {
+function User({ check, authInfo, currentUser, data }) {
+  const [localUser, setLocaluser] = useState();
   const navigate = useNavigate();
+
   //로그아웃
   const outBtn = () => {
     const logout = confirm('로그아웃 하시겠습니까?');
@@ -30,7 +32,12 @@ function User({ check, authInfo, currentUser }) {
           <ImgSection>
             <div>이미지</div>
           </ImgSection>
-          <UserNickName>{currentUser.nickName}님</UserNickName>
+          {data && data.length > 0 && currentUser.nickName === null ? (
+            <UserNickName>{data[0].nickName}님</UserNickName>
+          ) : (
+            <UserNickName>{currentUser.nickName}님</UserNickName>
+          )}
+
           <UserBtnSection>
             <Link to={'/mypage'}>마이페이지</Link>
             <button onClick={outBtn}>로그아웃</button>
