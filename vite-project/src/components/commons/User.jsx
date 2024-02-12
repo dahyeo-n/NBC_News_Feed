@@ -5,9 +5,13 @@ import { signOut } from 'firebase/auth';
 
 function User({ check, authInfo }) {
   //로그아웃
-  const outBtn = (e) => {
-    e.preventDefault();
-    signOut(authInfo);
+  const outBtn = () => {
+    const logout = confirm('로그아웃 하시겠습니까?');
+    if (logout) {
+      signOut(authInfo);
+    } else {
+      return;
+    }
   };
   return (
     <>
