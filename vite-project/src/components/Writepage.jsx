@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { addDoc, collection, getDoc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, storage } from '../firebase';
@@ -226,8 +226,6 @@ const WritePage = () => {
       setTitle('');
       setContent('');
       setSelectedFile(null);
-      setIsEditing(false);
-      setEditingPostId(null);
     }
     // 사용자가 취소를 누른 경우, 아무것도 안 함
   };
