@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Card({ posts }) {
+  const navigate = useNavigate();
   return (
     <>
       {posts.map((post) => {
         return (
-          <Parents key={post.id}>
+          <Parents
+            key={post.id}
+            onClick={() => {
+              navigate('/detailpage');
+            }}
+          >
             <CardTitle>
               <h2>{post.title}</h2>
             </CardTitle>
@@ -31,6 +38,11 @@ export const Parents = styled.div`
   border: 2px solid black;
   background-color: lightgrey;
   margin: 20px;
+  cursor: pointer;
+  &:hover {
+    transition: all 0.2s;
+    transform: scale(1.05);
+  }
 `;
 export const CardTitle = styled.div`
   font-size: 30px;

@@ -16,7 +16,7 @@ function User({ check, authInfo, currentUser }) {
   };
   const writeBtnHandler = () => {
     if (check) {
-      navigate('/WritePage');
+      navigate('/writepage');
     } else {
       alert('로그인이 필요한 서비스 입니다.');
       navigate('/loginpage');
@@ -88,6 +88,12 @@ export const LogoTitle = styled.div`
 `;
 export const WriteBtn = styled.button`
   margin-bottom: 5px;
+  border: 2px solid black;
+  cursor: pointer;
+  &:hover {
+    transition: all 0.2s;
+    transform: scale(1.05);
+  }
 `;
 
 export const ImgSection = styled.div`
