@@ -1,8 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { signOut } from 'firebase/auth';
 
-function User({ check }) {
+function User({ check, authInfo }) {
+  //로그아웃
+  const outBtn = (e) => {
+    e.preventDefault();
+    signOut(authInfo);
+  };
   return (
     <>
       {check && (
@@ -14,7 +20,7 @@ function User({ check }) {
           <UserNickName>닉네임</UserNickName>
           <UserBtnSection>
             <Link to={'/mypage'}>마이페이지</Link>
-            <button>로그아웃</button>
+            <button onClick={outBtn}>로그아웃</button>
           </UserBtnSection>
         </Parents>
       )}

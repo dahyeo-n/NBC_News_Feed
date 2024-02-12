@@ -12,6 +12,7 @@ function MainPage() {
   const [data, setData] = useState([]);
   const [check, setCheck] = useState(false);
   const [currentUserEmail, setCurruntUserEmail] = useState(null);
+  const [authInfo, setAuthInfo] = useState(null);
 
   //로그인체크
   useEffect(() => {
@@ -19,6 +20,8 @@ function MainPage() {
       if (user !== null) {
         setCheck(true);
         setCurruntUserEmail(user.email);
+        setAuthInfo(auth);
+        console.log(authInfo);
       } else {
         setCheck(false);
         setCurruntUserEmail(null);
@@ -45,11 +48,6 @@ function MainPage() {
     };
     fetchData();
   }, [currentUserEmail]);
-  //로그아웃
-  const outBtn = (e) => {
-    e.preventDefault();
-    signOut(auth);
-  };
 
   return (
     <div>
@@ -57,7 +55,7 @@ function MainPage() {
       <Parents>
         <Wrapper>
           <UserSection>
-            <User check={check} />
+            <User check={check} authInfo={authInfo} />
           </UserSection>
           <CardSection>
             <Card />
