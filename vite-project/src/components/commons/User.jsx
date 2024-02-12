@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOut } from 'firebase/auth';
 
-function User({ check, authInfo }) {
+function User({ check, authInfo, currentUser }) {
   const navigate = useNavigate();
   //로그아웃
   const outBtn = () => {
@@ -30,7 +30,7 @@ function User({ check, authInfo }) {
           <ImgSection>
             <div>이미지</div>
           </ImgSection>
-          <UserNickName>닉네임</UserNickName>
+          <UserNickName>{currentUser.nickName}님</UserNickName>
           <UserBtnSection>
             <Link to={'/mypage'}>마이페이지</Link>
             <button onClick={outBtn}>로그아웃</button>

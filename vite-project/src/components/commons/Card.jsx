@@ -1,41 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-function Card() {
+function Card({ posts }) {
   return (
     <>
-      <Parents>
-        <CardTitle>
-          <h2>Ttile</h2>
-        </CardTitle>
-        <div>닉네임 ㅣ 작성일</div>
-        <div>이미지</div>
-        <div>Content ...</div>
-      </Parents>
-      <Parents>
-        <CardTitle>
-          <h2>Ttile</h2>
-        </CardTitle>
-        <div>닉네임 ㅣ 작성일</div>
-        <div>이미지</div>
-        <div>Content ...</div>
-      </Parents>
-      <Parents>
-        <CardTitle>
-          <h2>Ttile</h2>
-        </CardTitle>
-        <div>닉네임 ㅣ 작성일</div>
-        <div>이미지</div>
-        <div>Content ...</div>
-      </Parents>
-      <Parents>
-        <CardTitle>
-          <h2>Ttile</h2>
-        </CardTitle>
-        <div>닉네임 ㅣ 작성일</div>
-        <div>이미지</div>
-        <div>Content ...</div>
-      </Parents>
+      {posts.map((post) => {
+        return (
+          <Parents key={post.id}>
+            <CardTitle>
+              <h2>{post.title}</h2>
+            </CardTitle>
+            <div>
+              {post.nickName} ㅣ {post.createdAt}
+            </div>
+            <div>이미지</div>
+            <div>{post.content}</div>
+          </Parents>
+        );
+      })}
     </>
   );
 }
