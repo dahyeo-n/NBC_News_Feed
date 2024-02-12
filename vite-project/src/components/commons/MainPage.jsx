@@ -57,7 +57,7 @@ function MainPage() {
       <Parents>
         <Wrapper>
           <UserSection>
-            <User />
+            <User check={check} />
           </UserSection>
           <CardSection>
             <Card />
