@@ -329,7 +329,6 @@ const DetailPage = () => {
           </div>
         </form>
         <div>
-          {/* Working Section */}
           <h1>상세 페이지 글</h1>
           {posts
             .filter((post) => !post.isDone) // Main Page에 들어가야 할 로직
@@ -339,7 +338,10 @@ const DetailPage = () => {
                   <div>{post.title}</div>
                   <div>Nickname | {post.createdAt}</div>
                 </StTitleWriteBox2>
-                <StBoxWithImage>Image</StBoxWithImage>
+                <StBoxWithImage>
+                  {/* 전역 상태로 저장된 사진 불러와서 보여주기 */}
+                  {/* {post.imageUrl && <img src={imageUrl} alt="Post" style={{ maxWidth: '500px', maxHeight: '500px' }} />} */}
+                </StBoxWithImage>
                 <StContentWriteBox2>{post.content}</StContentWriteBox2>
                 <StWriteCancleCompleteBtn>
                   {/* 첫 작성일 때랑 수정일 때랑 다르게(삼항연산자) */}

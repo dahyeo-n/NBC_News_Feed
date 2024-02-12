@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { addDoc, collection, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { auth, storage } from '../firebase';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { storage } from '../firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -102,10 +102,10 @@ const StWriteCancleCompleteBtn = styled.div`
 `;
 
 const WritePage = () => {
-  const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
@@ -117,8 +117,10 @@ const WritePage = () => {
         const docRef = doc(db, 'posts', id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setTitle(docSnap.data().title);
-          setContent(docSnap.data().content);
+          const postData = docSnap.data();
+          setTitle(postData.title);
+          setContent(postData.content);
+          setImageUrl(postData.imageUrl || '');
         } else {
           alert('게시물이 존재하지 않습니다.');
           navigate('/');
@@ -129,39 +131,38 @@ const WritePage = () => {
     fetchPost();
   }, [id, navigate]);
 
+  // 파일 업로드 로직
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
 
     try {
-      let imageUrl = '';
+      let uploadedImageUrl = imageUrl;
       if (selectedFile) {
-        const fileRef = ref(storage, `uploads/${selectedFile.name}`);
-        const uploadResult = await uploadBytes(fileRef, selectedFile);
-        imageUrl = await getDownloadURL(uploadResult.ref);
+        const storageRef = ref(storage, `uploads/${selectedFile.name}`);
+        await uploadBytes(storageRef, selectedFile);
+        uploadedImageUrl = await getDownloadURL(storageRef);
       }
 
       if (id) {
-        // 기존 게시글 수정
         await updateDoc(doc(db, 'posts', id), {
           title,
           content,
-          ...(imageUrl && { imageUrl })
+          imageUrl: uploadedImageUrl,
+          updatedAt: Timestamp.now()
         });
         alert('게시물이 수정되었습니다!');
       } else {
-        // 새 게시글 작성
         await addDoc(collection(db, 'posts'), {
-          // email
           title,
           content,
-          imageUrl,
+          imageUrl: uploadedImageUrl,
           createdAt: Timestamp.now()
         });
         alert('새 게시물이 추가되었습니다!');
       }
     } catch (error) {
-      console.error('게시물 저장 실패: ', error);
+      console.error('Error saving the post: ', error);
       alert('게시물 저장에 실패했습니다.');
     } finally {
       setIsLoading(false);
@@ -176,49 +177,6 @@ const WritePage = () => {
   // 파일 선택 로직
   const handleFileSelect = (event) => setSelectedFile(event.target.files[0]);
 
-  // 파일 업로드 로직
-  const fileUploadHandler = async () => {
-    if (!selectedFile) return; // 파일이 선택되지 않았으면 함수 종료
-
-    try {
-      // ref라는 함수를 통해 storage 내부에 저장할 위치를 정할 수 있음
-      // 두 번째 인자로 folder/file이라는 이름으로 저장(/로 경로 구분)
-      const imageRef = ref(storage, `uploads/${auth.currentUser.uid}/${selectedFile.name}`);
-      // 첫 번째 인자로 참조값인 imageRef를 받고, 두 번째 인자로 실제로 업로드할 파일 적음
-      await uploadBytes(imageRef, selectedFile);
-      const downloadURL = await getDownloadURL(imageRef);
-      console.log('Download URL:', downloadURL);
-    } catch (error) {
-      console.error('Error uploading file: ', error);
-    }
-  };
-
-  // updateDoc을 사용하여 게시글 수정
-  // 게시글 상태 업데이트 로직
-  const updatePost = async (id) => {
-    try {
-      // 비동기 함수를 사용하는 경우, 항상 try...catch 블록을 사용하여 예외 처리를 해주는 것이 좋음
-      // collection 안에 있는 document의 값을 업데이트 해줘야 됨
-      const postToUpdate = posts.find((post) => post.id === id);
-      const postRef = doc(db, 'posts', id);
-      await updateDoc(postRef, { isDone: !postToUpdate.isDone });
-      setPosts((prev) => prev.map((post) => (post.id === id ? { ...post, isDone: !post.isDone } : post)));
-    } catch (error) {
-      console.error('Error updating document: ', error);
-    }
-  };
-
-  // deleteDoc을 사용하여 게시글 삭제
-  const deletePost = async (id) => {
-    try {
-      const postRef = doc(db, 'posts', id);
-      await deleteDoc(postRef);
-      setPosts((prev) => prev.filter((post) => post.id !== id));
-    } catch (error) {
-      console.error('Error deleting document: ', error);
-    }
-  };
-
   const cancelBtnhandler = () => {
     const userConfirmed = window.confirm('변경사항이 모두 초기화됩니다. 정말 나가시겠습니까?');
     if (userConfirmed) {
@@ -226,6 +184,7 @@ const WritePage = () => {
       setTitle('');
       setContent('');
       setSelectedFile(null);
+      navigate('/');
     }
     // 사용자가 취소를 누른 경우, 아무것도 안 함
   };
@@ -254,12 +213,20 @@ const WritePage = () => {
               onChange={contentChangeHandler}
               required
             />
+            {/* 사진 보이는 구간 */}
+            <div>
+              {imageUrl && (
+                <div>
+                  <img src={imageUrl} alt="Post" style={{ maxWidth: '500px', maxHeight: '500px' }} />
+                </div>
+              )}
+            </div>
             {/* 파일 업로드 구간 */}
             <StImageBox>
               <StImageText>Image</StImageText>
               <StFileSelect>
                 <input type="file" onChange={handleFileSelect} />
-                <button onClick={fileUploadHandler}>Upload</button>
+                {selectedFile && <p>Selected file: {selectedFile.name}</p>}
               </StFileSelect>
             </StImageBox>
             {/* Cancle, Complete 버튼 구간 */}
@@ -270,37 +237,12 @@ const WritePage = () => {
               <button type="button" onClick={cancelBtnhandler}>
                 Cancle
               </button>
-              <button type="submit">Complete</button>{' '}
+              <button type="submit" disabled={isLoading}>
+                {isLoading ? 'in progress...' : 'Complete'}
+              </button>
             </StWriteCancleCompleteBtn>
           </div>
         </form>
-        <div>
-          {/* Working Section */}
-          <h3>Working</h3>
-          {posts
-            .filter((post) => !post.isDone)
-            .map((post) => (
-              <div key={post.id}>
-                <span>{post.title}</span>
-                <span>{post.content}</span>
-                {/* 첫 작성일 때랑 수정일 때랑 다르게(삼항연산자) */}
-                <button onClick={() => updatePost(post.id)}>완료</button>
-                <button onClick={() => deletePost(post.id)}>삭제</button>
-              </div>
-            ))}
-          {/* Done Section */}
-          <h3>Done</h3>
-          {posts
-            .filter((post) => post.isDone)
-            .map((post) => (
-              <div key={post.id}>
-                <span>{post.title}</span>
-                <span>{post.content}</span>
-                <button onClick={() => updatePost(post.id)}>취소</button>
-                <button onClick={() => deletePost(post.id)}>삭제</button>
-              </div>
-            ))}
-        </div>
       </StPageWide>
     </StHeader>
   );

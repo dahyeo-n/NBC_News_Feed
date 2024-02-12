@@ -1,101 +1,102 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { storage } from '../firebase';
-import { ref, uploadBytesResumable, getDownloadURL, uploadBytes } from 'firebase/storage';
+// db, doc, getDoc, updateDoc, useState, useEffect는 닉네임 넣으려고 한 거라 나중에 빼야 됨
+// 이메일 동적으로 가져올 때, auth 추가하기
+import { storage, db } from '../firebase';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
+import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 
 const StFontColor = styled.div`
   color: black;
   font-weight: 200;
+  font-size: larger;
 `;
 
 const MyPage = () => {
-  const [files, setFileList] = useState([]); // 파일 리스트
-  const [isUploading, setUploading] = useState(false); // 업로드 상태
-  const [photoURL, setPhotosURL] = useState([]); // 업로드 완료된 사진 링크들
-  const [progress, setProgress] = useState(0); // 업로드 진행 상태
+  // 기본 이미지 주소 저장 로직
+  const defaultProfileImage =
+    'https://firebasestorage.googleapis.com/v0/b/newsfeed-96796.appspot.com/o/profile_images%2F%EB%A1%9C%EC%A7%81%EC%9D%B4_%EB%96%A0%EC%98%A4%EB%A5%B8_%ED%96%84%EC%8A%88%ED%83%80.jpg?alt=media&token=38a85eef-766a-4c55-9aef-bdd35fe8ba7b';
+  const [profileImage, setProfileImage] = useState(defaultProfileImage);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploading, setUploading] = useState(false);
   const navigate = useNavigate();
 
-  // 파일 선택 시 파일리스트 상태 변경
+  // 사용자 이메일로 식별해서 닉네임 변경하는 로직
+  const userEmail = 'user@example.com';
+  const [nickname, setNickname] = useState('Dev햄슈타');
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      // const user = auth.currentUser; (이거 추가할 때, 아래 두 줄 코드 if문 안으로 넣어야 됨)
+      const docRef = doc(db, 'users', userEmail); // Using userEmail as document identifier
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        setProfileImage(userData.profileImage || defaultProfileImage);
+        setNickname(userData.nickname || 'Anonymous');
+      } else {
+        console.log('No such document!');
+      }
+    };
+
+    fetchUserProfile();
+    //   }, []); 아래 코드 이걸로 변경
+  }, [userEmail]);
+
+  // 파일 선택 시, 파일리스트 상태 변경
   const handleImageChange = (e) => {
-    for (const image of e.target.files) {
-      setFileList((prevState) => [...prevState, image]);
-    }
+    setSelectedFile(e.target.files[0]);
   };
 
-  // 업로드 시 호출되는 로직
+  // 파일 업로드 시, 호출되는 로직
   const handleImageUpload = async (e) => {
     e.preventDefault();
+    if (!selectedFile) return;
     setUploading(true);
 
-    const uploadPromises = files.map((file) => {
-      const storageRef = ref(storage, `images/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+    // const userEmail = auth.currentUser.email; // 현재 사용자의 이메일
+    const storageRef = ref(storage, `profile_images/${selectedFile.name}`);
 
-      return new Promise((resolve, reject) => {
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            setProgress(progress);
-          },
-          (error) => {
-            // Handle unsuccessful uploads
-            reject(error);
-          },
-          () => {
-            // Handle successful uploads on complete
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              console.log('File available at', downloadURL);
-              resolve(downloadURL);
-            });
-          }
-        );
-      });
-    });
-
-    Promise.all(uploadPromises)
-      .then((urls) => {
-        setPhotosURL(urls);
-        alert('프로필 사진이 업로드되었습니다.');
-      })
-      .catch((error) => {
-        console.error('Error uploading files: ', error);
-        alert('프로필 사진이 업로드에 실패했습니다.');
-      })
-      .finally(() => {
-        setUploading(false);
-        setFileList([]);
-        setProgress(0);
-      });
-  };
-
-  // 새 이미지로 교체
-  const handleReplaceImage = async (file, index) => {
-    if (!file) return;
-    setUploading(true);
-    const storageRef = ref(storage, `images/${file.name}`);
     try {
-      await uploadBytes(storageRef, file);
-      const newDownloadURL = await getDownloadURL(storageRef);
-      const updatedUrls = [...photoURL];
-      updatedUrls[index] = newDownloadURL; // 특정 인덱스의 URL을 새 URL로 업데이트
-      setPhotosURL(updatedUrls);
-      alert('프로필 사진이 교체되었습니다.');
+      await uploadBytes(storageRef, selectedFile);
+      const downloadURL = await getDownloadURL(storageRef);
+      await updateDoc(doc(db, 'users', userEmail), {
+        profileImage: downloadURL,
+        // 아래 닉네임 삭제
+        nickname
+      });
+      setProfileImage(downloadURL); // Update profile image with the new URL
+      alert('프로필 사진이 업데이트 되었습니다.');
     } catch (error) {
-      console.error('프로필 사진 교체 실패: ', error);
-      alert('프로필 사진 교체에 실패했습니다.');
+      console.error('프로필 사진 업로드 실패: ', error);
+      alert('프로필 사진 업로드에 실패했습니다.');
     } finally {
       setUploading(false);
+      setSelectedFile(null); // 파일 Reset
     }
   };
 
-  // 업로드된 이미지 중 하나를 새 이미지로 교체하기 위한 UI와 로직
-  const handleFileReplace = (event, index) => {
-    const file = event.target.files[0];
-    if (file) {
-      handleReplaceImage(file, index);
+  // 닉네임 수정 로직
+  const handleNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
+
+  const handleNicknameUpdate = async (e) => {
+    e.preventDefault();
+    // if (!auth.currentUser) return;
+    setUploading(true);
+
+    // const userEmail = auth.currentUser.email;
+
+    try {
+      await updateDoc(doc(db, 'users', userEmail), { nickname });
+      alert('닉네임이 변경됐습니다.');
+    } catch (error) {
+      console.error('[Error] 닉네임 변경 실패: ', error);
+      alert('닉네임 변경에 실패했습니다.');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -106,24 +107,25 @@ const MyPage = () => {
 
   return (
     <div>
-      <StFontColor>마이페이지입니다</StFontColor>
-      <form onSubmit={(e) => handleImageUpload(e, files)}>
+      <StFontColor>My Profile</StFontColor>
+      <div>
+        <img src={profileImage} alt="Profile" style={{ width: '200px', height: '200px' }} />
+      </div>
+      <form onSubmit={handleNicknameUpdate}>
         <label>
-          <input multiple accept="image/*" type="file" onChange={handleImageChange} />
+          Nickname:
+          <input type="text" value={nickname} onChange={handleNicknameChange} />
         </label>
-        <button type="submit">{isUploading ? '업로드 중...' : '업로드'}</button>
+        <button type="submit">{isUploading ? '닉네임 수정 중...' : '닉네임 수정'}</button>
       </form>
-      {photoURL?.length > 0 && (
-        <ul>
-          {photoURL.map((url, index) => (
-            <li key={index}>
-              <img src={url} alt="Uploaded" style={{ width: '200px', height: '200px' }} />
-              <input type="file" onChange={(e) => handleFileReplace(e, index)} />
-            </li>
-          ))}
-        </ul>
-      )}
+      <form onSubmit={handleImageUpload}>
+        <label>
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+        </label>
+        <button type="submit">{isUploading ? '사진 수정 중...' : '사진 수정'}</button>
+      </form>
       <button onClick={handleNavigateToWritePage}>게시물 작성</button>
+      <div>{/* map 메서드 넣을 곳 */}</div>
     </div>
   );
 };

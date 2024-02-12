@@ -33,6 +33,9 @@ const App = () => {
           <Route path="/fileupload" element={<FileUpload />} />
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          {/* 새 게시글 '작성' */}
+          <Route path="/writepage" element={<WritePage />} />
+          {/* 클릭한 본인 게시글 '수정' */}
           <Route path="/writepage/:id" element={<WritePage posts={posts} setPosts={setPosts} />} />
           <Route path="/detailpage" element={<DetailPage posts={posts} setPosts={setPosts} />} />
         </Routes>
