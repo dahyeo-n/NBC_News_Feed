@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOut } from 'firebase/auth';
 
 function User({ check, authInfo }) {
+  const navigate = useNavigate();
   //로그아웃
   const outBtn = () => {
     const logout = confirm('로그아웃 하시겠습니까?');
@@ -11,6 +12,14 @@ function User({ check, authInfo }) {
       signOut(authInfo);
     } else {
       return;
+    }
+  };
+  const writeBtnHandler = () => {
+    if (check) {
+      navigate('/WritePage');
+    } else {
+      alert('로그인이 필요한 서비스 입니다.');
+      navigate('/loginpage');
     }
   };
   return (
@@ -39,7 +48,7 @@ function User({ check, authInfo }) {
           </div>
         </NotJoin>
       )}
-      <WriteBtn>게시물작성</WriteBtn>
+      <WriteBtn onClick={writeBtnHandler}>게시물작성</WriteBtn>
     </>
   );
 }
