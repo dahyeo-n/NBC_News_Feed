@@ -18,14 +18,9 @@ const DetailPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log('postId', postId);
-  console.log('posts', posts);
-
   const post = posts.find(function (p) {
     return p.id === postId;
   });
-
-  console.log('post', post);
 
   // DetailPage 컴포넌트 내 useEffect
   // const fetchPost = async () => {
@@ -64,7 +59,6 @@ const DetailPage = () => {
       }
     }
   };
-
   return (
     <div>
       <Header />

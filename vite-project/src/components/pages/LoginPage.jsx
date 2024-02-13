@@ -96,7 +96,6 @@ function LoginPage() {
                 </S.ButtonStyle>
               </div>
             </form>
-
             <S.JoinWrap>
               <ul>
                 <li>
@@ -104,7 +103,6 @@ function LoginPage() {
                 </li>
               </ul>
             </S.JoinWrap>
-
             <S.EtcLoginWrap>
               <p>or</p>
               <S.EtcLoginUl>

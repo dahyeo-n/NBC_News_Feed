@@ -19,25 +19,18 @@ function MainPage() {
     return item.user;
   });
 
-  console.log('user >>>>>>>>>> ', user);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      // query 세팅해서 data get하는 로직
       const querySnapshot = await getDocs(collection(db, 'posts'));
 
       // initialPosts => 데이터로 이루어진 배열(객체로 이루어진 배열)
       const initialPosts = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data()
-
-        // createdAt: doc.data().createdAt?.toDate().toLocaleString() ???????????
       }));
 
-      console.log('initialPosts', initialPosts);
-      // setPosts(initialPosts);
       dispatch(init(initialPosts));
     };
     fetchData();
@@ -53,8 +46,6 @@ function MainPage() {
 
         // (2) google
 
-        console.log('onAuth user => ', user.displayName);
-        console.log('onAuth user => ', user.email);
         dispatch(
           loginUser({
             email: user.email,
@@ -69,33 +60,11 @@ function MainPage() {
     });
   }, []);
 
-  //로컬유저 정보 가져오기
-  // useEffect(() => {
-  //   if (!localUser) return;
-  //   const fetchData = async () => {
-  //     const q = query(
-  //       collection(db, 'users'),
-  //       //fireStore 조건문
-  //       where('email', '==', localUser)
-  //     );
-  //     const querySnapshot = await getDocs(q);
-
-  //     let userData = [];
-
-  //     querySnapshot.forEach((doc) => {
-  //       userData.push({ id: doc.id, ...doc.data() });
-  //     });
-  //     setSignUpUser(userData);
-  //   };
-  //   fetchData();
-  // }, [localUser]);
-
   return (
     <>
       <Header />
       <Parents>
         <Wrapper>
-          {/* <User check={check} authInfo={authInfo} currentUser={currentUser} signUpUser={signUpUser} /> */}
           <User />
           {posts.length > 0 ? <Card /> : <div>작성된 게시글이 없습니다.</div>}
         </Wrapper>

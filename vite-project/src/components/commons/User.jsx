@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import * as S from '../style/User.style';
 import { getAuth, signOut } from 'firebase/auth';
 import { useSelector } from 'react-redux';
 
@@ -9,8 +9,6 @@ function User() {
     return item.user;
   });
   const isLogin = user.isLogin;
-
-  console.log('User 컴포넌트의 user => ', user);
 
   const authInfo = getAuth();
 
@@ -33,100 +31,39 @@ function User() {
   };
 
   return (
-    <UserSection>
+    <S.UserSection>
       {isLogin && (
-        <Parents>
+        <S.Parents>
           {/* 로그인시 */}
-          <ImgSection>
-            <div>이미지</div>
-          </ImgSection>
+
           {/* {signUpUser && signUpUser.length > 0 && currentUser.nickName === null ? (
             <UserNickName>{signUpUser[0].nickName}님</UserNickName>
           ) : (
             <UserNickName>{currentUser.nickName}님</UserNickName>
           )} */}
-
-          <UserBtnSection>
+          <div>
+            <S.NickNameSpan>{user.nickName}</S.NickNameSpan>님 환영 합니다.
+          </div>
+          <S.UserBtnSection>
             <Link to={'/mypage'}>마이페이지</Link>
             <button onClick={outBtn}>로그아웃</button>
-          </UserBtnSection>
-        </Parents>
+          </S.UserBtnSection>
+        </S.Parents>
       )}
       {!isLogin && (
         //  회원이 아닐 때
-        <NotJoin>
+        <S.NotJoin>
           <div>
             <Link to={'/loginpage'}>로그인</Link>
           </div>
           <div>
             <Link to={'/joinpage'}>회원가입</Link>
           </div>
-        </NotJoin>
+        </S.NotJoin>
       )}
-      <WriteBtn onClick={writeBtnHandler}>게시물작성</WriteBtn>
-    </UserSection>
+      <S.WriteBtn onClick={writeBtnHandler}>게시물작성</S.WriteBtn>
+    </S.UserSection>
   );
 }
 
 export default User;
-
-export const UserSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export const Parents = styled.div`
-  height: 300px;
-  width: 250px;
-  display: flex;
-  border: 2px solid black;
-  background-color: lightgrey;
-  margin: 10px 0 10px 10px;
-  flex-direction: column;
-  align-items: center;
-`;
-export const NotJoin = styled.div`
-  height: 300px;
-  width: 250px;
-  display: flex;
-  border: 2px solid black;
-  background-color: lightgrey;
-  margin: 10px 0 10px 10px;
-  flex-direction: column;
-  align-items: center;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  font-size: 25px;
-`;
-
-export const LogoTitle = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 30px;
-  font-size: 30px;
-`;
-export const WriteBtn = styled.button`
-  margin-bottom: 5px;
-  border: 2px solid black;
-  cursor: pointer;
-  &:hover {
-    transition: all 0.2s;
-    transform: scale(1.05);
-  }
-`;
-
-export const ImgSection = styled.div`
-  height: 200px;
-  width: 200px;
-  margin-top: 20px;
-  border: 2px solid black;
-`;
-export const UserNickName = styled.p`
-  margin-top: 20px;
-`;
-export const UserBtnSection = styled.div`
-  display: flex;
-  margin-top: 30px;
-`;

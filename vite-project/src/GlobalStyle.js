@@ -151,6 +151,7 @@ button {
     border: none;
     background: none;
     outline: none;
+    cursor:pointer;
 }
 
 .hidden {
@@ -169,6 +170,8 @@ button {
 .jcc {
     justify-content: center;
 }
+
+
 `;
 
 export default GlobalStyle;
