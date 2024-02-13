@@ -8,6 +8,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPost, updatePost } from '../../redux/modules/posts';
+import Header from '../commons/Header';
 
 const WritePage = () => {
   const [title, setTitle] = useState('');
@@ -113,9 +114,6 @@ const WritePage = () => {
   const titleChangeHandler = (event) => setTitle(event.target.value);
   const contentChangeHandler = (event) => setContent(event.target.value);
 
-  // 파일 선택 로직
-  const handleFileSelect = (event) => setSelectedFile(event.target.files[0]);
-
   // 취소 버튼 로직
   const cancelBtnhandler = () => {
     const userConfirmed = window.confirm('변경사항이 모두 초기화됩니다. 정말 나가시겠습니까?');
@@ -130,9 +128,10 @@ const WritePage = () => {
   };
 
   return (
-    <StHeader>
+    <div>
+      <Header />
       <StPageWide>
-        <h1>{id ? '게시글 수정' : '새 게시글 작성'}</h1>
+        {/* <h1>{id ? '게시글 수정' : '새 게시글 작성'}</h1> */}
         <form onSubmit={handleSubmit}>
           <div>
             {/* 제목 입력 구간 */}
@@ -161,41 +160,26 @@ const WritePage = () => {
                 </div>
               )}
             </div>
-            {/* 파일 업로드 구간 */}
-            <StImageBox>
-              <StImageText>Image</StImageText>
-              <StFileSelect>
-                <input type="file" onChange={handleFileSelect} />
-                {selectedFile && <p>Selected file: {selectedFile.name}</p>}
-              </StFileSelect>
-            </StImageBox>
             {/* Cancle, Complete 버튼 구간 */}
             <StWriteCancleCompleteBtn>
               {/* submit은 onClick 이벤트 없이 form의 onSubmit 이벤트를 통해 처리됨 */}
               {/* 사용자가 현재 작업을 취소하고 폼을 초기 상태로 리셋.
               type="button"으로 설정하고 클릭 이벤트에 폼 상태를 초기화하는 함수 연결 */}
-              <button type="button" onClick={cancelBtnhandler}>
+              <Stbtn type="button" onClick={cancelBtnhandler}>
                 Cancle
-              </button>
-              <button type="submit" disabled={isLoading}>
+              </Stbtn>
+              <Stbtn type="submit" disabled={isLoading}>
                 {isLoading ? 'in progress...' : 'Complete'}
-              </button>
+              </Stbtn>
             </StWriteCancleCompleteBtn>
           </div>
         </form>
       </StPageWide>
-    </StHeader>
+    </div>
   );
 };
 
 export default WritePage;
-
-const StHeader = styled.header`
-  background-color: white;
-  padding: 30px; // 예시로 추가한 스타일
-  height: 800px;
-  max-height: 1000px; // 내용에 따라 이 범위 내에서 크기가 조정됨
-`;
 
 const StPageWide = styled.div`
   display: flex;
@@ -203,77 +187,45 @@ const StPageWide = styled.div`
   align-items: center;
   gap: 10px;
   font-weight: 200;
-  width: 1300px;
+  width: 100%;
   height: 800px;
   min-width: 800px;
   margin: auto;
   padding: auto;
-  background-color: white;
-  border-radius: 10px;
-  font-size: large;
+  background-color: #1c1c20 !important;
+  color: #fff !important;
+  border-radius: 20px;
+  font-size: x-large;
 `;
 
 const StTitleWriteBox = styled.input`
-  width: 1000px;
+  width: 700px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: baseline;
   padding: 15px;
   margin: 20px 10px 0px 10px;
   border-radius: 10px;
-  background-color: gainsboro;
-  font-size: larger;
-  font-weight: 600;
-  text-align: center;
-  &::placeholder {
-    color: black;
-  }
+  background-color: #1c1c20 !important;
+  font-size: 36px;
+  line-height: 230%;
+  font-weight: bold;
+  /* font-weight: 400; */
+  letter-spacing: -0.02px;
+  color: #7472e7;
 `;
 
 const StContentWriteBox = styled.input`
-  width: 1000px;
-  height: 200px;
+  width: 700px;
+  height: 100px;
   padding: 15px;
-  margin: 20px 10px 0px 10px;
+  margin: 0px 10px 0px 10px;
   border-radius: 10px;
-  background-color: gainsboro;
-  font-size: larger;
+  background-color: #1c1c20 !important;
+  color: #fff !important;
+  font-size: 28px;
   font-weight: 600;
-  text-align: center;
-  &::placeholder {
-    color: black;
-  }
-`;
-
-const StImageText = styled.div`
-  width: 100px;
-  background-color: gainsboro;
-  font-size: large;
-  font-weight: 1000;
-  text-align: center;
-  padding: 10px;
-  margin: 20px 15px 0px 0px;
-  border-radius: 10px;
-`;
-
-const StFileSelect = styled.div`
-  width: 885px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  background-color: gainsboro;
-  font-size: large;
-  font-weight: 1000;
-  text-align: center;
-  padding: 5px;
-  margin: 20px 0px 0px 0px;
-  border-radius: 10px;
-`;
-
-const StImageBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-left: 10px;
+  align-items: baseline;
 `;
 
 const StWriteCancleCompleteBtn = styled.div`
@@ -281,4 +233,14 @@ const StWriteCancleCompleteBtn = styled.div`
   justify-content: flex-end;
   border-radius: 10px;
   margin: 20px 10px 0px 0px;
+`;
+
+const Stbtn = styled.button`
+  border: none;
+  margin: 10px;
+  padding: 10px;
+  font-size: medium;
+  color: white;
+  background-color: #3e3e3e;
+  border-radius: 10px;
 `;

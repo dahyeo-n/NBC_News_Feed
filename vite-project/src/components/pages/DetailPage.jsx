@@ -66,28 +66,23 @@ const DetailPage = () => {
   };
 
   return (
-    <StHeader>
+    <div>
       <Header />
       <StPageWide>
         <div>
-          <h1>상세 페이지 글</h1>
           <div key={post.id}>
             <StTitleWriteBox>
-              <div>{post.title}</div>
-              <div>
+              <StTitle>{post.title}</StTitle>
+              <StNickNameCreatedAt>
                 {post.nickName} | {post.createdAt}
-              </div>
+              </StNickNameCreatedAt>
             </StTitleWriteBox>
-            <StBoxWithImage>
-              {/* 전역 상태로 저장된 사진 불러와서 보여주기 */}
-              {/* {post.imageUrl && <img src={imageUrl} alt="Post" style={{ maxWidth: '500px', maxHeight: '500px' }} />} */}
-            </StBoxWithImage>
             <StContentWriteBox>{post.content}</StContentWriteBox>
             <StWriteCancleCompleteBtn>
               {user.email === post.email ? (
                 <>
-                  <button onClick={moveToWritePage}>Edit</button>
-                  <button onClick={onDeletePostButtonClick}>Delete</button>
+                  <Stbtn onClick={moveToWritePage}>Edit</Stbtn>
+                  <Stbtn onClick={onDeletePostButtonClick}>Delete</Stbtn>
                 </>
               ) : (
                 ''
@@ -96,7 +91,7 @@ const DetailPage = () => {
           </div>
         </div>
       </StPageWide>
-    </StHeader>
+    </div>
   );
 };
 
@@ -108,61 +103,58 @@ DetailPage.propTypes = {
 
 export default DetailPage;
 
-const StHeader = styled.div`
-  background-color: white;
-  padding: 30px; // 예시로 추가한 스타일
-  height: 800px;
-  max-height: 1000px; // 내용에 따라 이 범위 내에서 크기가 조정됨
-`;
-
 const StPageWide = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   font-weight: 200;
-  width: 1300px;
+  width: 100%;
   height: 800px;
   min-width: 800px;
   margin: auto;
   padding: auto;
-  background-color: white;
-  border-radius: 10px;
+  background-color: #1c1c20 !important;
+  color: #fff !important;
+  border-radius: 20px;
   font-size: x-large;
 `;
 
 const StTitleWriteBox = styled.div`
-  width: 1000px;
+  width: 700px;
   display: flex;
   flex-direction: column;
   align-items: baseline;
   padding: 15px;
   margin: 20px 10px 0px 10px;
   border-radius: 10px;
-  background-color: gainsboro;
-  font-size: larger;
-  font-weight: 600;
+  background-color: #1c1c20 !important;
+  font-size: 22px;
+  line-height: 230%;
+  font-weight: bold;
+  /* font-weight: 400; */
+  letter-spacing: -0.02px;
+  color: #7472e7;
+`;
+
+const StTitle = styled.div`
+  color: #7472e7;
+  font-size: 36px;
+`;
+
+const StNickNameCreatedAt = styled.div`
+  color: #aaaaaa;
+  font-size: 18px;
 `;
 
 const StContentWriteBox = styled.div`
-  width: 1000px;
-  height: 200px;
+  width: 700px;
+  height: 100px;
   padding: 15px;
-  margin: 20px 10px 0px 10px;
+  margin: 0px 10px 0px 10px;
   border-radius: 10px;
-  background-color: gainsboro;
-  font-size: x-large;
-  font-weight: 600;
-  align-items: baseline;
-`;
-
-const StBoxWithImage = styled.div`
-  width: 1000px;
-  height: 230px;
-  padding: 15px;
-  margin: 20px 10px 0px 10px;
-  background-color: gainsboro;
-  font-size: x-large;
+  background-color: #1c1c20 !important;
+  font-size: 28px;
   font-weight: 600;
   align-items: baseline;
 `;
@@ -172,4 +164,14 @@ const StWriteCancleCompleteBtn = styled.div`
   justify-content: flex-end;
   border-radius: 10px;
   margin: 20px 10px 0px 0px;
+`;
+
+const Stbtn = styled.button`
+  border: none;
+  margin: 10px;
+  padding: 10px;
+  font-size: medium;
+  color: white;
+  background-color: #3e3e3e;
+  border-radius: 10px;
 `;

@@ -15,7 +15,7 @@ const GoogleBtn = () => {
     const userRef = collection(db, 'users');
     const userQuery = query(userRef, where('email', '==', email));
     const querySnapshot = await getDocs(userQuery);
-    //db에서 email이 똑같은 데이터를 받아오고 없다면 (길이가 0이면) 추가
+    // db에서 email이 똑같은 데이터를 받아오고 없다면 (길이가 0이면) 추가
     if (querySnapshot.size === 0) {
       const newUser = { email: email, nickName: nickName };
       const collectionRef = collection(db, 'users');

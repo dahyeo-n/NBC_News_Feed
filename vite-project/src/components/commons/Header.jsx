@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,7 +14,6 @@ function Header() {
         alt="Logo"
         onClick={navigateToMain}
       />
-      <h3>React</h3>
     </StHeader>
   );
 }
@@ -25,7 +23,7 @@ export default Header;
 export const StHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 20px 70px 20px 20px;
+  padding: 10px 150px 20px 150px;
 `;
 const StLogoImage = styled.img`
   width: 100px;

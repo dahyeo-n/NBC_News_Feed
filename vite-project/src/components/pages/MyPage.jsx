@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 // db, doc, getDoc, updateDoc, useState, useEffect는 닉네임 넣으려고 한 거라 나중에 빼야 됨
 // 이메일 동적으로 가져올 때, auth 추가하기
-import { storage, db } from '../../firesbase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firesbase';
+import { doc, getDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
-import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../commons/Header';
@@ -19,8 +18,6 @@ const MyPage = () => {
   const defaultProfileImage =
     'https://firebasestorage.googleapis.com/v0/b/newsfeed-96796.appspot.com/o/profile_images%2F%EB%A1%9C%EC%A7%81%EC%9D%B4_%EB%96%A0%EC%98%A4%EB%A5%B8_%ED%96%84%EC%8A%88%ED%83%80.jpg?alt=media&token=38a85eef-766a-4c55-9aef-bdd35fe8ba7b';
   const [profileImage, setProfileImage] = useState(defaultProfileImage);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isUploading, setUploading] = useState(false);
   const navigate = useNavigate();
 
   // 사용자 이메일로 식별해서 닉네임 변경하는 로직
@@ -45,62 +42,6 @@ const MyPage = () => {
     //   }, []); 아래 코드 이걸로 변경
   }, [userEmail]);
 
-  // 파일 선택 시, 파일리스트 상태 변경
-  const handleImageChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
-
-  // 파일 업로드 시, 호출되는 로직
-  const handleImageUpload = async (e) => {
-    e.preventDefault();
-    if (!selectedFile) return;
-    setUploading(true);
-
-    // const userEmail = auth.currentUser.email; // 현재 사용자의 이메일
-    const storageRef = ref(storage, `profile_images/${selectedFile.name}`);
-
-    try {
-      await uploadBytes(storageRef, selectedFile);
-      const downloadURL = await getDownloadURL(storageRef);
-      await updateDoc(doc(db, 'users', userEmail), {
-        profileImage: downloadURL,
-        // 아래 닉네임 삭제
-        nickname
-      });
-      setProfileImage(downloadURL); // Update profile image with the new URL
-      alert('프로필 사진이 업데이트 되었습니다.');
-    } catch (error) {
-      console.error('프로필 사진 업로드 실패: ', error);
-      alert('프로필 사진 업로드에 실패했습니다.');
-    } finally {
-      setUploading(false);
-      setSelectedFile(null); // 파일 Reset
-    }
-  };
-
-  // 닉네임 수정 로직
-  const handleNicknameChange = (e) => {
-    setNickname(e.target.value);
-  };
-
-  const handleNicknameUpdate = async (e) => {
-    e.preventDefault();
-    // if (!auth.currentUser) return;
-    setUploading(true);
-
-    // const userEmail = auth.currentUser.email;
-
-    try {
-      await updateDoc(doc(db, 'users', userEmail), { nickname });
-      alert('닉네임이 변경됐습니다.');
-    } catch (error) {
-      console.error('[Error] 닉네임 변경 실패: ', error);
-      alert('닉네임 변경에 실패했습니다.');
-    } finally {
-      setUploading(false);
-    }
-  };
-
   // 게시물 작성 페이지로 이동하는 로직
   const handleNavigateToWritePage = () => {
     navigate('/writepage'); // '/writepage' 경로로 이동
@@ -111,25 +52,12 @@ const MyPage = () => {
       <Header />
       <StLeftArea>
         <StProfileBox>
-          <StLogoImage src={profileImage} alt="Profile" style={{ width: '200px', height: '200px' }} />
+          <StProfileImage src={profileImage} alt="Profile" style={{ width: '200px', height: '200px' }} />
           <StNicknameBox>
-            <form onSubmit={handleNicknameUpdate}>
-              <label>
-                <input type="text" value={nickname} onChange={handleNicknameChange} />
-              </label>
-              <button type="submit">{isUploading ? '수정 중...' : '닉네임 수정'}</button>
-            </form>
+            <div>{nickname}</div>
           </StNicknameBox>
-          <StFileUploadBox>
-            <form onSubmit={handleImageUpload}>
-              <label>
-                <input type="file" accept="image/*" onChange={handleImageChange} />
-              </label>
-              <button type="submit">{isUploading ? '수정 중...' : '사진 수정'}</button>
-            </form>
-          </StFileUploadBox>
         </StProfileBox>
-        <button onClick={handleNavigateToWritePage}>게시물 작성</button>
+        <StWritePostBtn onClick={handleNavigateToWritePage}>게시물 작성</StWritePostBtn>
       </StLeftArea>
       <StRightArea>
         {posts
@@ -138,20 +66,15 @@ const MyPage = () => {
           })
           .map((post) => (
             <div key={post.id}>
-              <StTitleWriteBox
+              <StWriteBox
                 onClick={() => {
                   navigate(`/detailpage/${post.id}`);
                 }}
               >
-                <div>{post.title}</div>
-                <div>| Nickname</div>
-                <div>| {post.createdAt}</div>
-              </StTitleWriteBox>
-              <StBoxWithImage>
-                {/* 전역 상태로 저장된 사진 불러와서 보여주기 */}
-                {/* {post.imageUrl && <img src={imageUrl} alt="Post" style={{ maxWidth: '500px', maxHeight: '500px' }} />} */}
-              </StBoxWithImage>
-              <StContentWriteBox>{post.content}</StContentWriteBox>
+                <StTitle>{post.title}</StTitle>
+                <StCreatedAt>| {post.createdAt}</StCreatedAt>
+                <StContent>{post.content}</StContent>
+              </StWriteBox>
             </div>
           ))}
       </StRightArea>
@@ -171,18 +94,19 @@ const StAllArea = styled.div`
   margin: auto;
 `;
 
-const StLogoImage = styled.img`
+const StProfileImage = styled.img`
   width: 100px;
   cursor: pointer;
 `;
 
 const StLeftArea = styled.div`
-  width: 30%;
+  width: 22%;
   height: 1000px;
   float: left;
   box-sizing: border-box;
   padding: 20px;
   background: #8977ad;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
 `;
@@ -190,11 +114,13 @@ const StLeftArea = styled.div`
 const StRightArea = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  width: 70%;
+  /* justify-content: center; */
+  width: 77%;
+  height: 1000px;
   float: right;
   box-sizing: border-box;
-  background: white;
+  background-color: #1c1c20 !important;
+  border-radius: 20px;
   padding: 15px;
 `;
 
@@ -212,15 +138,13 @@ const StProfileBox = styled.div`
 const StNicknameBox = styled.div`
   display: flex;
   flex-direction: column;
-  background: #8977ad;
+  margin: 10px;
+  color: #5250d8;
+  font-size: 18px;
+  font-weight: bold;
 `;
 
-const StFileUploadBox = styled.div`
-  padding: 10px;
-  margin: 15px 30px 0px 30px;
-`;
-
-const StTitleWriteBox = styled.div`
+const StWriteBox = styled.div`
   width: 240px;
   display: flex;
   flex-direction: column;
@@ -228,29 +152,51 @@ const StTitleWriteBox = styled.div`
   padding: 15px;
   margin: 20px 10px 0px 10px;
   border-radius: 10px;
-  background-color: gainsboro;
+  background-color: #505050;
+  font-size: 20px;
+  line-height: 120%;
+  font-weight: bold;
+  /* font-weight: 400; */
+  letter-spacing: -0.02px;
+  color: #fff !important;
+  cursor: pointer;
+  &:hover {
+    transition: all 0.2s;
+    transform: scale(1.05);
+  }
+`;
+
+const StTitle = styled.div`
+  color: #7a78fa;
+  font-size: 25px;
+  margin-bottom: 10px;
+  line-height: 120%;
+`;
+
+const StCreatedAt = styled.div`
+  color: #cfcfcf;
+  font-size: 12px;
+  margin-bottom: 10px;
+`;
+
+const StContent = styled.div`
+  color: #fff !important;
+  font-size: 22px;
+  line-height: 120%;
+`;
+
+const StWritePostBtn = styled.button`
+  border: none;
+  margin: 10px;
+  padding: 10px;
   font-size: medium;
-  font-weight: 600;
-`;
-
-const StBoxWithImage = styled.div`
-  width: 250px;
-  height: 150px;
-  padding: 10px;
-  margin: 10px 10px 0px 10px;
-  background-color: gainsboro;
-  font-size: x-large;
-  font-weight: 600;
-  align-items: baseline;
-`;
-
-const StContentWriteBox = styled.div`
-  width: 250px;
-  padding: 10px;
-  margin: 10px 10px 0px 10px;
+  font-weight: bold;
+  color: white;
+  background-color: #3e3e3e;
   border-radius: 10px;
-  background-color: gainsboro;
-  font-size: small;
-  font-weight: 600;
-  align-items: baseline;
+  cursor: pointer;
+  &:hover {
+    transition: all 0.2s;
+    transform: scale(1.05);
+  }
 `;
