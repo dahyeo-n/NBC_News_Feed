@@ -131,7 +131,7 @@ const WritePage = () => {
     fetchPost();
   }, [id, navigate]);
 
-  // 파일 업로드 로직
+  // 새 게시글 작성 or 수정 로직
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -145,13 +145,16 @@ const WritePage = () => {
       }
 
       if (id) {
-        await updateDoc(doc(db, 'posts', id), {
+        // 업데이트할 데이터 정의
+        const updatedData = {
           title,
           content,
           imageUrl: uploadedImageUrl,
           updatedAt: Timestamp.now()
-        });
+        };
+        await updateDoc(doc(db, 'posts', id), updatedData);
         alert('게시물이 수정되었습니다!');
+        navigate(`/detailpage/${id}`); // 수정된 게시글의 상세 페이지로 이동
       } else {
         await addDoc(collection(db, 'posts'), {
           title,
@@ -160,13 +163,14 @@ const WritePage = () => {
           createdAt: Timestamp.now()
         });
         alert('새 게시물이 추가되었습니다!');
+        // 수정된 게시글의 상세 페이지로 리다이렉트
+        navigate(`/detailpage/${id}`, { state: { updated: true } });
       }
     } catch (error) {
       console.error('Error saving the post: ', error);
       alert('게시물 저장에 실패했습니다.');
     } finally {
       setIsLoading(false);
-      navigate('/');
     }
   };
 
@@ -177,6 +181,7 @@ const WritePage = () => {
   // 파일 선택 로직
   const handleFileSelect = (event) => setSelectedFile(event.target.files[0]);
 
+  // 취소 버튼 로직
   const cancelBtnhandler = () => {
     const userConfirmed = window.confirm('변경사항이 모두 초기화됩니다. 정말 나가시겠습니까?');
     if (userConfirmed) {
