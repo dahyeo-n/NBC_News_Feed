@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { db } from '../firebase';
+import { db } from '../firesbase';
 import { deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';

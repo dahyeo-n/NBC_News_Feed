@@ -1,22 +1,17 @@
 import styled from 'styled-components';
 // db, doc, getDoc, updateDoc, useState, useEffect는 닉네임 넣으려고 한 거라 나중에 빼야 됨
 // 이메일 동적으로 가져올 때, auth 추가하기
-import { storage, db } from '../firebase';
+import { storage, db } from '../firesbase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Header from './commons/Header';
 
 const StAllArea = styled.div`
   width: 1400px;
   margin: auto;
-`;
-
-const StHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 70px 20px 20px;
 `;
 
 const StLogoImage = styled.img`
@@ -195,21 +190,9 @@ const MyPage = ({ posts }) => {
     navigate('/writepage'); // '/writepage' 경로로 이동
   };
 
-  // Main Page로 이동
-  const navigateToMain = () => {
-    navigate('/');
-  };
-
   return (
     <StAllArea>
-      <StHeader>
-        <StLogoImage
-          src="https://blog.kakaocdn.net/dn/bgSwWu/btsELplChCq/FRtBQfF9CrG8UHd6tnzoK0/img.jpg"
-          alt="Logo"
-          onClick={navigateToMain}
-        />
-        <h3>React</h3>
-      </StHeader>
+      <Header />
       <StLeftArea>
         <StProfileBox>
           <StLogoImage src={profileImage} alt="Profile" style={{ width: '200px', height: '200px' }} />

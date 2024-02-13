@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { addDoc, collection, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../firesbase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../firebase';
+import { storage } from '../firesbase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';

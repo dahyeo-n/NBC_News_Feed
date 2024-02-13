@@ -1,4 +1,3 @@
-import AllPage from './components/AllPage';
 import MyPage from './components/MyPage';
 import WritePage from './components/Writepage';
 import DetailPage from './components/DetailPage';
@@ -6,8 +5,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebase';
+import { db } from './firesbase';
 import { useEffect, useState } from 'react';
+import MainPage from './components/pages/MainPage';
+import LoginPage from './components/pages/LoginPage';
+import JoinPage from './components/pages/JoinPage';
 
 const StFontColor = styled.div`
   color: black;
@@ -37,6 +39,7 @@ const App = () => {
         createdAt: doc.data().createdAt?.toDate().toLocaleString()
       }));
       setPosts(initialPosts);
+      console.log(posts);
     };
     fetchData();
   }, []);
@@ -50,7 +53,6 @@ const App = () => {
     <Router>
       <StFontColor>
         <Routes>
-          <Route path="/" element={<AllPage />} />
           <Route path="/mypage" element={<MyPage posts={posts} />} />
           {/* 새 게시글 '작성' */}
           <Route path="/writepage" element={<WritePage />} />
@@ -58,6 +60,9 @@ const App = () => {
           <Route path="/writepage/:id" element={<WritePage posts={posts} setPosts={setPosts} />} />
           <Route path="/detailpage" element={<DetailPage posts={posts} setPosts={setPosts} />} />
           <Route path="/detailpage/:id" element={<DetailPage posts={posts} setPosts={setPosts} />} />
+          <Route path="/" element={<MainPage posts={posts} setPosts={setPosts} />} />
+          <Route path="/loginpage" element={<LoginPage />} />
+          <Route path="/joinpage" element={<JoinPage />} />
         </Routes>
       </StFontColor>
     </Router>
