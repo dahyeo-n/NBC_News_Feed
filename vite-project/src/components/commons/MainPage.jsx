@@ -67,44 +67,28 @@ function MainPage() {
     });
   }, []);
   return (
-    <div>
+    <>
       <Header />
       <Parents>
         <Wrapper>
-          <UserSection>
-            <User
-              check={check}
-              authInfo={authInfo}
-              currentUser={currentUser}
-              data={data}
-            />
-          </UserSection>
-          <CardSection>{posts !== null && <Card posts={posts} />}</CardSection>
+          <User
+            check={check}
+            authInfo={authInfo}
+            currentUser={currentUser}
+            data={data}
+          />
+          {posts !== null && <Card posts={posts} />}
         </Wrapper>
       </Parents>
-    </div>
+    </>
   );
 }
 
 export default MainPage;
 export const Parents = styled.div`
   width: 100%;
-  heigth:100%
-  display: flex;
-  border: 2px solid black;
-  background-color: lightgrey;
+  border-top: 2px solid black;
 `;
 export const Wrapper = styled.div`
   display: flex;
-`;
-export const UserSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-export const CardSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
 `;

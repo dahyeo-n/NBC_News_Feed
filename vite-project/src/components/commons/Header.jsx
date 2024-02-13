@@ -24,6 +24,5 @@ export const Parents = styled.div`
   display: flex;
   height: 100px;
   border-bottom: 1px solid #ccc;
-  background-color: lightgrey;
   font-size: 30px;
 `;

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { signOut } from 'firebase/auth';
 
 function User({ check, authInfo, currentUser, data }) {
-  const [localUser, setLocaluser] = useState();
   const navigate = useNavigate();
 
   //로그아웃
@@ -25,7 +24,7 @@ function User({ check, authInfo, currentUser, data }) {
     }
   };
   return (
-    <>
+    <UserSection>
       {check && (
         <Parents>
           {/* 로그인시 */}
@@ -56,11 +55,17 @@ function User({ check, authInfo, currentUser, data }) {
         </NotJoin>
       )}
       <WriteBtn onClick={writeBtnHandler}>게시물작성</WriteBtn>
-    </>
+    </UserSection>
   );
 }
 
 export default User;
+
+export const UserSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export const Parents = styled.div`
   height: 300px;
