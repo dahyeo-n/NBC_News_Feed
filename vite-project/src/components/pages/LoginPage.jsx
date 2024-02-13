@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as S from '../style/Login.style';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -44,7 +44,7 @@ function LoginPage() {
       setPwValid(false);
     }
   };
-  const signUpBtn = async (e) => {
+  const signInBtn = async (e) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, pw);
@@ -91,7 +91,7 @@ function LoginPage() {
                 </S.Validation>
               </S.InputWrapper>
               <div>
-                <S.ButtonStyle type="submit" disabled={disabled} onClick={signUpBtn}>
+                <S.ButtonStyle type="submit" disabled={disabled} onClick={signInBtn}>
                   로그인
                 </S.ButtonStyle>
               </div>

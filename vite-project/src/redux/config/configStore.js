@@ -1,7 +1,11 @@
 import { createStore, combineReducers } from 'redux';
-import users from '../modules/users';
+import user from '../modules/user';
+import posts from '../modules/posts';
 
-const rootReducer = combineReducers({ users });
+const rootReducer = combineReducers({
+  user: user,
+  posts: posts
+});
 const store = createStore(rootReducer);
 
 export default store;

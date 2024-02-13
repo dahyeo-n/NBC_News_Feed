@@ -1,12 +1,20 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { signOut } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
+import { useSelector } from 'react-redux';
 
-function User({ check, authInfo, currentUser, signUpUser }) {
+function User() {
   const navigate = useNavigate();
+  const user = useSelector(function (item) {
+    return item.user;
+  });
+  const isLogin = user.isLogin;
 
-  //로그아웃
+  console.log('User 컴포넌트의 user => ', user);
+
+  const authInfo = getAuth();
+
+  // 로그아웃
   const outBtn = () => {
     const logout = confirm('로그아웃 하시겠습니까?');
     if (logout) {
@@ -16,26 +24,27 @@ function User({ check, authInfo, currentUser, signUpUser }) {
     }
   };
   const writeBtnHandler = () => {
-    if (check) {
+    if (isLogin) {
       navigate('/writepage');
     } else {
       alert('로그인이 필요한 서비스 입니다.');
       navigate('/loginpage');
     }
   };
+
   return (
     <UserSection>
-      {check && (
+      {isLogin && (
         <Parents>
           {/* 로그인시 */}
           <ImgSection>
             <div>이미지</div>
           </ImgSection>
-          {signUpUser && signUpUser.length > 0 && currentUser.nickName === null ? (
+          {/* {signUpUser && signUpUser.length > 0 && currentUser.nickName === null ? (
             <UserNickName>{signUpUser[0].nickName}님</UserNickName>
           ) : (
             <UserNickName>{currentUser.nickName}님</UserNickName>
-          )}
+          )} */}
 
           <UserBtnSection>
             <Link to={'/mypage'}>마이페이지</Link>
@@ -43,7 +52,7 @@ function User({ check, authInfo, currentUser, signUpUser }) {
           </UserBtnSection>
         </Parents>
       )}
-      {!check && (
+      {!isLogin && (
         //  회원이 아닐 때
         <NotJoin>
           <div>

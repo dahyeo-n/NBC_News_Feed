@@ -1,40 +1,103 @@
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { useEffect } from 'react';
 import { db } from '../../firesbase';
 import Header from '../commons/Header';
 import User from '../commons/User';
 import Card from '../commons/Card';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { init } from '../../redux/modules/posts';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firesbase';
+import { loginUser, logoutUser } from '../../redux/modules/user';
 
-function MainPage({ posts, check, currentUser, authInfo, localUser, signUpUser, setSignUpUser }) {
-  //로컬유저 정보 가져오기
+function MainPage() {
+  const posts = useSelector(function (item) {
+    return item.posts;
+  });
+  const user = useSelector(function (item) {
+    return item.user;
+  });
+
+  console.log('user >>>>>>>>>> ', user);
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (!localUser) return;
     const fetchData = async () => {
-      const q = query(
-        collection(db, 'users'),
-        //fireStore 조건문
-        where('email', '==', localUser)
-      );
-      const querySnapshot = await getDocs(q);
+      // query 세팅해서 data get하는 로직
+      const querySnapshot = await getDocs(collection(db, 'posts'));
 
-      let userData = [];
+      // initialPosts => 데이터로 이루어진 배열(객체로 이루어진 배열)
+      const initialPosts = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
 
-      querySnapshot.forEach((doc) => {
-        userData.push({ id: doc.id, ...doc.data() });
-      });
-      setSignUpUser(userData);
+        // createdAt: doc.data().createdAt?.toDate().toLocaleString() ???????????
+      }));
+
+      console.log('initialPosts', initialPosts);
+      // setPosts(initialPosts);
+      dispatch(init(initialPosts));
     };
     fetchData();
-  }, [localUser]);
+  }, []);
+
+  // 로그인 확인
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // 로그인 한 유저가 존재하는 경우
+
+        // (1) github
+
+        // (2) google
+
+        console.log('onAuth user => ', user.displayName);
+        console.log('onAuth user => ', user.email);
+        dispatch(
+          loginUser({
+            email: user.email,
+            nickName: user.displayName,
+            isLogin: true
+          })
+        );
+      } else {
+        // 로그인 한 유저가 존재하지 않는 경우
+        dispatch(logoutUser());
+      }
+    });
+  }, []);
+
+  //로컬유저 정보 가져오기
+  // useEffect(() => {
+  //   if (!localUser) return;
+  //   const fetchData = async () => {
+  //     const q = query(
+  //       collection(db, 'users'),
+  //       //fireStore 조건문
+  //       where('email', '==', localUser)
+  //     );
+  //     const querySnapshot = await getDocs(q);
+
+  //     let userData = [];
+
+  //     querySnapshot.forEach((doc) => {
+  //       userData.push({ id: doc.id, ...doc.data() });
+  //     });
+  //     setSignUpUser(userData);
+  //   };
+  //   fetchData();
+  // }, [localUser]);
 
   return (
     <>
       <Header />
       <Parents>
         <Wrapper>
-          <User check={check} authInfo={authInfo} currentUser={currentUser} signUpUser={signUpUser} />
-          {posts !== null && <Card posts={posts} />}
+          {/* <User check={check} authInfo={authInfo} currentUser={currentUser} signUpUser={signUpUser} /> */}
+          <User />
+          {posts.length > 0 ? <Card /> : <div>작성된 게시글이 없습니다.</div>}
         </Wrapper>
       </Parents>
     </>

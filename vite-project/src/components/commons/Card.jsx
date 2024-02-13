@@ -1,8 +1,12 @@
-import React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-function Card({ posts }) {
+function Card() {
+  const posts = useSelector(function (item) {
+    return item.posts;
+  });
+
   const navigate = useNavigate();
   return (
     <CardSection>
@@ -32,7 +36,7 @@ function Card({ posts }) {
 export default Card;
 export const Parents = styled.div`
   height: 300px;
-  width: width: calc(50% - 20px); 
+  width: calc(50% - 20px);
   display: flex;
   flex-direction: column;
   border: 2px solid black;
