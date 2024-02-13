@@ -46,6 +46,7 @@ function Routers() {
         setCurrentUser({ email: user.email, nickName: user.displayName });
         setLocalUser(user.email);
         setAuthInfo(auth);
+        console.log(user);
       } else {
         setCheck(false);
         setCurrentUser(null);

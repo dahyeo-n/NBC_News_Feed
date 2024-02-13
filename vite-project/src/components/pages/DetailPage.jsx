@@ -45,7 +45,6 @@ const DetailPage = ({ posts, setPosts, currentUser, signUpUser }) => {
       }
     }
   };
-  console.log(currentUser.email);
   return (
     <StHeader>
       <Header />
