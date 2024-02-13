@@ -1,20 +1,7 @@
-import AllPage from './components/AllPage';
-import MyPage from './components/MyPage';
-import WritePage from './components/Writepage';
-import DetailPage from './components/DetailPage';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import styled from 'styled-components';
-
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebase';
-import { useEffect, useState } from 'react';
-
-const StFontColor = styled.div`
-  color: black;
-  font-weight: 200;
-`;
+import Routers from './components/shared/Routers';
 
 const App = () => {
+<<<<<<< HEAD
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -62,6 +49,9 @@ const App = () => {
       </StFontColor>
     </Router>
   );
+=======
+  return <Routers />;
+>>>>>>> 867b11c0cc7751e22d392cc393b9e498745a4d2b
 };
 
 export default App;

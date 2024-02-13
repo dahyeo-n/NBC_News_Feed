@@ -1,107 +1,13 @@
 import styled from 'styled-components';
 // db, doc, getDoc, updateDoc, useState, useEffect는 닉네임 넣으려고 한 거라 나중에 빼야 됨
 // 이메일 동적으로 가져올 때, auth 추가하기
-import { storage, db } from '../firebase';
+import { storage, db } from '../../firesbase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-const StAllArea = styled.div`
-  width: 1400px;
-  margin: auto;
-`;
-
-const StHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 70px 20px 20px;
-`;
-
-const StLogoImage = styled.img`
-  width: 100px;
-  cursor: pointer;
-`;
-
-const StLeftArea = styled.div`
-  width: 30%;
-  height: 1000px;
-  float: left;
-  box-sizing: border-box;
-  padding: 20px;
-  background: #8977ad;
-  display: flex;
-  flex-direction: column;
-`;
-
-const StRightArea = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 70%;
-  float: right;
-  box-sizing: border-box;
-  background: white;
-  padding: 15px;
-`;
-
-const StProfileBox = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: 10px;
-  background: white;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const StNicknameBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: #8977ad;
-`;
-
-const StFileUploadBox = styled.div`
-  padding: 10px;
-  margin: 15px 30px 0px 30px;
-`;
-
-const StTitleWriteBox = styled.div`
-  width: 240px;
-  display: flex;
-  flex-direction: column;
-  align-items: baseline;
-  padding: 15px;
-  margin: 20px 10px 0px 10px;
-  border-radius: 10px;
-  background-color: gainsboro;
-  font-size: medium;
-  font-weight: 600;
-`;
-
-const StBoxWithImage = styled.div`
-  width: 250px;
-  height: 150px;
-  padding: 10px;
-  margin: 10px 10px 0px 10px;
-  background-color: gainsboro;
-  font-size: x-large;
-  font-weight: 600;
-  align-items: baseline;
-`;
-
-const StContentWriteBox = styled.div`
-  width: 250px;
-  padding: 10px;
-  margin: 10px 10px 0px 10px;
-  border-radius: 10px;
-  background-color: gainsboro;
-  font-size: small;
-  font-weight: 600;
-  align-items: baseline;
-`;
+import Header from '../commons/Header';
 
 const MyPage = ({ posts }) => {
   // 기본 이미지 주소 저장 로직
@@ -195,21 +101,9 @@ const MyPage = ({ posts }) => {
     navigate('/writepage'); // '/writepage' 경로로 이동
   };
 
-  // Main Page로 이동
-  const navigateToMain = () => {
-    navigate('/');
-  };
-
   return (
     <StAllArea>
-      <StHeader>
-        <StLogoImage
-          src="https://blog.kakaocdn.net/dn/bgSwWu/btsELplChCq/FRtBQfF9CrG8UHd6tnzoK0/img.jpg"
-          alt="Logo"
-          onClick={navigateToMain}
-        />
-        <h3>React</h3>
-      </StHeader>
+      <Header />
       <StLeftArea>
         <StProfileBox>
           <StLogoImage src={profileImage} alt="Profile" style={{ width: '200px', height: '200px' }} />
@@ -258,3 +152,92 @@ MyPage.propTypes = {
 };
 
 export default MyPage;
+
+const StAllArea = styled.div`
+  width: 1400px;
+  margin: auto;
+`;
+
+const StLogoImage = styled.img`
+  width: 100px;
+  cursor: pointer;
+`;
+
+const StLeftArea = styled.div`
+  width: 30%;
+  height: 1000px;
+  float: left;
+  box-sizing: border-box;
+  padding: 20px;
+  background: #8977ad;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StRightArea = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 70%;
+  float: right;
+  box-sizing: border-box;
+  background: white;
+  padding: 15px;
+`;
+
+const StProfileBox = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const StNicknameBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: #8977ad;
+`;
+
+const StFileUploadBox = styled.div`
+  padding: 10px;
+  margin: 15px 30px 0px 30px;
+`;
+
+const StTitleWriteBox = styled.div`
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  padding: 15px;
+  margin: 20px 10px 0px 10px;
+  border-radius: 10px;
+  background-color: gainsboro;
+  font-size: medium;
+  font-weight: 600;
+`;
+
+const StBoxWithImage = styled.div`
+  width: 250px;
+  height: 150px;
+  padding: 10px;
+  margin: 10px 10px 0px 10px;
+  background-color: gainsboro;
+  font-size: x-large;
+  font-weight: 600;
+  align-items: baseline;
+`;
+
+const StContentWriteBox = styled.div`
+  width: 250px;
+  padding: 10px;
+  margin: 10px 10px 0px 10px;
+  border-radius: 10px;
+  background-color: gainsboro;
+  font-size: small;
+  font-weight: 600;
+  align-items: baseline;
+`;
