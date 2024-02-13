@@ -1,105 +1,12 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { addDoc, collection, getDoc } from 'firebase/firestore';
-import { db } from '../firesbase';
+import { db } from '../../firesbase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../firesbase';
+import { storage } from '../../firesbase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';
-
-const StHeader = styled.header`
-  background-color: white;
-  padding: 30px; // 예시로 추가한 스타일
-  height: 800px;
-  max-height: 1000px; // 내용에 따라 이 범위 내에서 크기가 조정됨
-`;
-
-const StPageWide = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  font-weight: 200;
-  width: 1300px;
-  height: 800px;
-  min-width: 800px;
-  margin: auto;
-  padding: auto;
-  background-color: white;
-  border-radius: 10px;
-  font-size: large;
-`;
-
-const StTitleWriteBox = styled.input`
-  width: 1000px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px;
-  margin: 20px 10px 0px 10px;
-  border-radius: 10px;
-  background-color: gainsboro;
-  font-size: larger;
-  font-weight: 600;
-  text-align: center;
-  &::placeholder {
-    color: black;
-  }
-`;
-
-const StContentWriteBox = styled.input`
-  width: 1000px;
-  height: 200px;
-  padding: 15px;
-  margin: 20px 10px 0px 10px;
-  border-radius: 10px;
-  background-color: gainsboro;
-  font-size: larger;
-  font-weight: 600;
-  text-align: center;
-  &::placeholder {
-    color: black;
-  }
-`;
-
-const StImageText = styled.div`
-  width: 100px;
-  background-color: gainsboro;
-  font-size: large;
-  font-weight: 1000;
-  text-align: center;
-  padding: 10px;
-  margin: 20px 15px 0px 0px;
-  border-radius: 10px;
-`;
-
-const StFileSelect = styled.div`
-  width: 885px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  background-color: gainsboro;
-  font-size: large;
-  font-weight: 1000;
-  text-align: center;
-  padding: 5px;
-  margin: 20px 0px 0px 0px;
-  border-radius: 10px;
-`;
-
-const StImageBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-left: 10px;
-`;
-
-const StWriteCancleCompleteBtn = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  border-radius: 10px;
-  margin: 20px 10px 0px 0px;
-`;
 
 const WritePage = () => {
   const [title, setTitle] = useState('');
@@ -254,3 +161,96 @@ const WritePage = () => {
 };
 
 export default WritePage;
+
+const StHeader = styled.header`
+  background-color: white;
+  padding: 30px; // 예시로 추가한 스타일
+  height: 800px;
+  max-height: 1000px; // 내용에 따라 이 범위 내에서 크기가 조정됨
+`;
+
+const StPageWide = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-weight: 200;
+  width: 1300px;
+  height: 800px;
+  min-width: 800px;
+  margin: auto;
+  padding: auto;
+  background-color: white;
+  border-radius: 10px;
+  font-size: large;
+`;
+
+const StTitleWriteBox = styled.input`
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  margin: 20px 10px 0px 10px;
+  border-radius: 10px;
+  background-color: gainsboro;
+  font-size: larger;
+  font-weight: 600;
+  text-align: center;
+  &::placeholder {
+    color: black;
+  }
+`;
+
+const StContentWriteBox = styled.input`
+  width: 1000px;
+  height: 200px;
+  padding: 15px;
+  margin: 20px 10px 0px 10px;
+  border-radius: 10px;
+  background-color: gainsboro;
+  font-size: larger;
+  font-weight: 600;
+  text-align: center;
+  &::placeholder {
+    color: black;
+  }
+`;
+
+const StImageText = styled.div`
+  width: 100px;
+  background-color: gainsboro;
+  font-size: large;
+  font-weight: 1000;
+  text-align: center;
+  padding: 10px;
+  margin: 20px 15px 0px 0px;
+  border-radius: 10px;
+`;
+
+const StFileSelect = styled.div`
+  width: 885px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  background-color: gainsboro;
+  font-size: large;
+  font-weight: 1000;
+  text-align: center;
+  padding: 5px;
+  margin: 20px 0px 0px 0px;
+  border-radius: 10px;
+`;
+
+const StImageBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+`;
+
+const StWriteCancleCompleteBtn = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 10px;
+  margin: 20px 10px 0px 0px;
+`;

@@ -1,34 +1,12 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { db } from '../../firesbase';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../firesbase';
 import Header from '../commons/Header';
 import User from '../commons/User';
 import Card from '../commons/Card';
 import styled from 'styled-components';
 
-function MainPage({ posts, setPosts }) {
-  const [data, setData] = useState([]);
-  const [check, setCheck] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [authInfo, setAuthInfo] = useState(null);
-  const [localUser, setLocalUser] = useState();
-  //로그인체크
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user !== null) {
-        setCheck(true);
-        setCurrentUser({ email: user.email, nickName: user.displayName });
-        setLocalUser(user.email);
-        setAuthInfo(auth);
-      } else {
-        setCheck(false);
-        setCurrentUser(null);
-      }
-    });
-  }, []);
-
+function MainPage({ posts, check, currentUser, authInfo, localUser, signUpUser, setSignUpUser }) {
   //로컬유저 정보 가져오기
   useEffect(() => {
     if (!localUser) return;
@@ -45,32 +23,17 @@ function MainPage({ posts, setPosts }) {
       querySnapshot.forEach((doc) => {
         userData.push({ id: doc.id, ...doc.data() });
       });
-      setData(userData);
+      setSignUpUser(userData);
     };
     fetchData();
   }, [localUser]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      let storeData = [];
-
-      //posts
-      const postsQuerySnapshot = await getDocs(collection(db, 'posts'));
-      postsQuerySnapshot.forEach((doc) => {
-        storeData.push({ id: doc.id, ...doc.data() });
-      });
-      return storeData;
-    };
-    fetchData().then((item) => {
-      setPosts(item);
-    });
-  }, []);
   return (
     <>
       <Header />
       <Parents>
         <Wrapper>
-          <User check={check} authInfo={authInfo} currentUser={currentUser} data={data} />
+          <User check={check} authInfo={authInfo} currentUser={currentUser} signUpUser={signUpUser} />
           {posts !== null && <Card posts={posts} />}
         </Wrapper>
       </Parents>

@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as S from '../style/Login.style';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firesbase';
-
 import Header from '../commons/Header';
 import GoogleBtn from '../commons/GoogleBtn';
 import GitHubBtn from '../commons/GitHubBtn';
@@ -64,7 +63,6 @@ function LoginPage() {
       <Header />
       <S.MainStyle>
         <S.Section>
-          {/* 로그인,비번 최상위 부모 */}
           <S.Wrapper>
             <S.H2>LOGIN</S.H2>
             <form>
@@ -77,9 +75,7 @@ function LoginPage() {
                   autoFocus="autofocus"
                 />
                 <S.Validation>
-                  {!emailValid && email.length > 0 && (
-                    <div>올바른 이메일을 입력해주세요.</div>
-                  )}
+                  {!emailValid && email.length > 0 && <div>올바른 이메일을 입력해주세요.</div>}
                 </S.Validation>
               </S.InputWrapper>
               <S.InputWrapper>
@@ -91,23 +87,16 @@ function LoginPage() {
                   autoFocus="autofocus"
                 />
                 <S.Validation>
-                  {!pwValid && pw.length > 0 && (
-                    <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
-                  )}
+                  {!pwValid && pw.length > 0 && <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>}
                 </S.Validation>
               </S.InputWrapper>
               <div>
-                <S.ButtonStyle
-                  type="submit"
-                  disabled={disabled}
-                  onClick={signUpBtn}
-                >
+                <S.ButtonStyle type="submit" disabled={disabled} onClick={signUpBtn}>
                   로그인
                 </S.ButtonStyle>
               </div>
             </form>
-            {/* form 파트 끝 부분 */}
-            {/* 회원가입부분 */}
+
             <S.JoinWrap>
               <ul>
                 <li>
@@ -115,8 +104,7 @@ function LoginPage() {
                 </li>
               </ul>
             </S.JoinWrap>
-            {/* 회원가입 파트 끝 */}
-            {/* 소셜로그인 */}
+
             <S.EtcLoginWrap>
               <p>or</p>
               <S.EtcLoginUl>

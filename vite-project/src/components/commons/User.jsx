@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOut } from 'firebase/auth';
 
-function User({ check, authInfo, currentUser, data }) {
+function User({ check, authInfo, currentUser, signUpUser }) {
   const navigate = useNavigate();
 
   //로그아웃
@@ -31,8 +31,8 @@ function User({ check, authInfo, currentUser, data }) {
           <ImgSection>
             <div>이미지</div>
           </ImgSection>
-          {data && data.length > 0 && currentUser.nickName === null ? (
-            <UserNickName>{data[0].nickName}님</UserNickName>
+          {signUpUser && signUpUser.length > 0 && currentUser.nickName === null ? (
+            <UserNickName>{signUpUser[0].nickName}님</UserNickName>
           ) : (
             <UserNickName>{currentUser.nickName}님</UserNickName>
           )}

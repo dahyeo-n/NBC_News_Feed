@@ -11,7 +11,7 @@ function Card({ posts }) {
           <Parents
             key={post.id}
             onClick={() => {
-              navigate('/detailpage/${post.id}');
+              navigate(`/detailpage/${post.id}`);
             }}
           >
             <CardTitle>
@@ -20,7 +20,7 @@ function Card({ posts }) {
             <div>
               {post.nickName} ㅣ {post.createdAt}
             </div>
-            <div>이미지</div>
+            <div>{post.imageUrl}</div>
             <div>{post.content}</div>
           </Parents>
         );
