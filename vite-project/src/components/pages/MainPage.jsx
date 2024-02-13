@@ -8,12 +8,11 @@ import User from '../commons/User';
 import Card from '../commons/Card';
 import styled from 'styled-components';
 
-function MainPage() {
+function MainPage({ posts, setPosts }) {
   const [data, setData] = useState([]);
   const [check, setCheck] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [authInfo, setAuthInfo] = useState(null);
-  const [posts, setPosts] = useState(null);
   const [localUser, setLocalUser] = useState();
   //로그인체크
   useEffect(() => {
@@ -71,12 +70,7 @@ function MainPage() {
       <Header />
       <Parents>
         <Wrapper>
-          <User
-            check={check}
-            authInfo={authInfo}
-            currentUser={currentUser}
-            data={data}
-          />
+          <User check={check} authInfo={authInfo} currentUser={currentUser} data={data} />
           {posts !== null && <Card posts={posts} />}
         </Wrapper>
       </Parents>
