@@ -38,6 +38,7 @@ const GoogleBtn = () => {
       })
       .catch((err) => {
         console.log(err);
+        alert('이미 사용중인 이메일 입니다.');
       });
   };
   return (
