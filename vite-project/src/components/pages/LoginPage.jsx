@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import * as S from './style/Login.style';
+import * as S from '../style/Login.style';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firesbase';
-import GoogleBtn from './GoogleBtn';
-import GitHubBtn from './GitHubBtn';
-import Header from './commons/Header';
+import { auth } from '../../firesbase';
+
+import Header from '../commons/Header';
+import GoogleBtn from '../commons/GoogleBtn';
+import GitHubBtn from '../commons/GitHubBtn';
 
 function LoginPage() {
   const [email, setEmail] = useState('');

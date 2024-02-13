@@ -1,8 +1,8 @@
 import React from 'react';
-import GitHubImg from '../components/image/github.png';
-import { SocialBtn } from './style/SocialLogin.style';
+import GitHubImg from '../style/image/github.png';
+import { SocialBtn } from '../style/SocialLogin.style';
 import { GithubAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth, db } from '../firesbase';
+import { auth, db } from '../../firesbase';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 

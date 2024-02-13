@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../firesbase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firesbase';
-import Header from './Header';
-import User from './User';
-import Card from './Card';
+import Header from '../commons/Header';
+import User from '../commons/User';
+import Card from '../commons/Card';
 import styled from 'styled-components';
 
 function MainPage() {

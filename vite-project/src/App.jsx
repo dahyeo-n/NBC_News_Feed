@@ -1,9 +1,7 @@
-import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { app } from './firesbase';
-import JoinPage from './components/JoinPage';
-import LoginPage from './components/LoginPage';
-import MainPage from './components/commons/MainPage';
+import MainPage from './components/pages/MainPage';
+import LoginPage from './components/pages/LoginPage';
+import JoinPage from './components/pages/JoinPage';
 
 function App() {
   return (

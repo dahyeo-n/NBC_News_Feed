@@ -1,9 +1,10 @@
-import GoogleImg from '../components/image/google.png';
+import GoogleImg from '../style/image/google.png';
+
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth, db } from '../firesbase';
+import { auth, db } from '../../firesbase';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { SocialBtn } from './style/SocialLogin.style';
+import { SocialBtn } from '../style/SocialLogin.style';
 
 const GoogleBtn = () => {
   const navigate = useNavigate();

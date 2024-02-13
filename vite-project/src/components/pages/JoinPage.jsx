@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import * as S from './style/JoinPage.style';
+import * as S from '../style/JoinPage.style';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../firesbase';
+import { auth, db } from '../../firesbase';
 import { useNavigate } from 'react-router-dom';
 import {
   addDoc,
@@ -11,8 +11,8 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { MainStyle } from './style/Login.style';
-import Header from './commons/Header';
+import { MainStyle } from '../style/Login.style';
+import Header from '../commons/Header';
 
 function JoinPage() {
   const [emailTxt, setEmailTxt] = useState(''); // 이메일 텍스트
