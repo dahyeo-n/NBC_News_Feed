@@ -8,7 +8,7 @@ const StFontColor = styled.div`
   font-weight: 200;
 `;
 
-function Main() {
+function AllPage() {
   return (
     <StFontColor>
       메인입니다
@@ -21,4 +21,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default AllPage;
