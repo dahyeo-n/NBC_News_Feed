@@ -1,45 +1,59 @@
 import styled from 'styled-components';
 import { db } from '../../firesbase';
-import { deleteDoc, doc, getDoc } from 'firebase/firestore';
+import { deleteDoc, doc } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 import Header from '../commons/Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { deletePost } from '../../redux/modules/posts';
 
-const DetailPage = ({ posts, setPosts, currentUser, signUpUser }) => {
-  // [보류] 게시물 하나씩 나오게 해야 수정사항 보일 듯 ^^..
-  const [post, setPost] = useState(null); // 단일 게시물 데이터를 위한 상태
-  const { postId } = useParams(); // 현재 게시물의 ID 추출
+// 기억 { currentUser }
+const DetailPage = () => {
+  const { posts, user } = useSelector(function (item) {
+    return item;
+  });
+
+  // const [post, setPost] = useState(null); // 단일 게시물 데이터를 위한 상태
+  const { id: postId } = useParams(); // 현재 게시물의 ID 추출
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const post = posts.find(function (p) {
+    return p.id === postId;
+  });
 
   // DetailPage 컴포넌트 내 useEffect
-  const fetchPost = async () => {
-    const docRef = doc(db, 'posts', postId);
-    const docSnap = await getDoc(docRef);
+  // const fetchPost = async () => {
+  //   const docRef = doc(db, 'posts', postId);
+  //   const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      setPost({ id: docSnap.id, ...docSnap.data() }); // 게시물 데이터 상태 업데이트
-    } else {
-      navigate('/');
-    }
-  };
+  //   if (docSnap.exists()) {
+  //     setPost({ id: docSnap.id, ...docSnap.data() }); // 게시물 데이터 상태 업데이트
+  //   } else {
+  //     navigate('/');
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchPost();
-  }, [postId]); // postId가 변경될 때마다 실행
+  // useEffect(() => {
+  //   fetchPost();
+  // }, [postId]); // postId가 변경될 때마다 실행
 
   // Edit button Logic
-  const moveToWritePage = (id) => {
-    navigate(`/writepage/${id}`);
+  const moveToWritePage = () => {
+    navigate(`/writepage/${post.id}`);
   };
 
   // deleteDoc을 사용하여 게시글 삭제
-  const deletePost = async (id) => {
+  const onDeletePostButtonClick = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
-        const postRef = doc(db, 'posts', id);
+        const postRef = doc(db, 'posts', post.id);
         await deleteDoc(postRef);
-        setPosts((prev) => prev.filter((post) => post.id !== id));
+        // setPosts((prev) => prev.filter((post) => post.id !== id));
+
+        // dispatch
+        dispatch(deletePost(post.id));
+        navigate('/');
       } catch (error) {
         console.error('Error deleting document: ', error);
       }
@@ -51,27 +65,29 @@ const DetailPage = ({ posts, setPosts, currentUser, signUpUser }) => {
       <StPageWide>
         <div>
           <h1>상세 페이지 글</h1>
-          {posts.map((post) => (
-            <div key={post.id}>
-              <StTitleWriteBox>
-                <div>{post.title}</div>
-                <div>
-                  {post.nickName} | {post.createdAt}
-                </div>
-              </StTitleWriteBox>
-              <StBoxWithImage>
-                {/* 전역 상태로 저장된 사진 불러와서 보여주기 */}
-                {/* {post.imageUrl && <img src={imageUrl} alt="Post" style={{ maxWidth: '500px', maxHeight: '500px' }} />} */}
-              </StBoxWithImage>
-              <StContentWriteBox>{post.content}</StContentWriteBox>
-              <StWriteCancleCompleteBtn>
-                {/* 첫 작성일 때랑 수정일 때랑 다르게(삼항연산자) */}
-                {/* .filter((post) => !post.isDone) // post.email === !post.email) */}
-                <button onClick={() => moveToWritePage(post.id)}>Edit</button>
-                <button onClick={() => deletePost(post.id)}>Delete</button>
-              </StWriteCancleCompleteBtn>
-            </div>
-          ))}
+          <div key={post.id}>
+            <StTitleWriteBox>
+              <div>{post.title}</div>
+              <div>
+                {post.nickName} | {post.createdAt}
+              </div>
+            </StTitleWriteBox>
+            <StBoxWithImage>
+              {/* 전역 상태로 저장된 사진 불러와서 보여주기 */}
+              {/* {post.imageUrl && <img src={imageUrl} alt="Post" style={{ maxWidth: '500px', maxHeight: '500px' }} />} */}
+            </StBoxWithImage>
+            <StContentWriteBox>{post.content}</StContentWriteBox>
+            <StWriteCancleCompleteBtn>
+              {user.email === post.email ? (
+                <>
+                  <button onClick={moveToWritePage}>Edit</button>
+                  <button onClick={onDeletePostButtonClick}>Delete</button>
+                </>
+              ) : (
+                ''
+              )}
+            </StWriteCancleCompleteBtn>
+          </div>
         </div>
       </StPageWide>
     </StHeader>

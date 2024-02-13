@@ -8,8 +8,13 @@ import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../commons/Header';
+import { useSelector } from 'react-redux';
 
-const MyPage = ({ posts }) => {
+const MyPage = () => {
+  const { posts, user } = useSelector(function (item) {
+    return item;
+  });
+
   // 기본 이미지 주소 저장 로직
   const defaultProfileImage =
     'https://firebasestorage.googleapis.com/v0/b/newsfeed-96796.appspot.com/o/profile_images%2F%EB%A1%9C%EC%A7%81%EC%9D%B4_%EB%96%A0%EC%98%A4%EB%A5%B8_%ED%96%84%EC%8A%88%ED%83%80.jpg?alt=media&token=38a85eef-766a-4c55-9aef-bdd35fe8ba7b';
@@ -19,8 +24,8 @@ const MyPage = ({ posts }) => {
   const navigate = useNavigate();
 
   // 사용자 이메일로 식별해서 닉네임 변경하는 로직
-  const userEmail = 'user@example.com';
-  const [nickname, setNickname] = useState('Dev햄슈타');
+  const userEmail = user.email;
+  const [nickname, setNickname] = useState(user.nickName);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -127,20 +132,28 @@ const MyPage = ({ posts }) => {
         <button onClick={handleNavigateToWritePage}>게시물 작성</button>
       </StLeftArea>
       <StRightArea>
-        {posts.map((post) => (
-          <div key={post.id}>
-            <StTitleWriteBox>
-              <div>{post.title}</div>
-              <div>| Nickname</div>
-              <div>| {post.createdAt}</div>
-            </StTitleWriteBox>
-            <StBoxWithImage>
-              {/* 전역 상태로 저장된 사진 불러와서 보여주기 */}
-              {/* {post.imageUrl && <img src={imageUrl} alt="Post" style={{ maxWidth: '500px', maxHeight: '500px' }} />} */}
-            </StBoxWithImage>
-            <StContentWriteBox>{post.content}</StContentWriteBox>
-          </div>
-        ))}
+        {posts
+          .filter(function (post) {
+            return post.email === user.email;
+          })
+          .map((post) => (
+            <div key={post.id}>
+              <StTitleWriteBox
+                onClick={() => {
+                  navigate(`/detailpage/${post.id}`);
+                }}
+              >
+                <div>{post.title}</div>
+                <div>| Nickname</div>
+                <div>| {post.createdAt}</div>
+              </StTitleWriteBox>
+              <StBoxWithImage>
+                {/* 전역 상태로 저장된 사진 불러와서 보여주기 */}
+                {/* {post.imageUrl && <img src={imageUrl} alt="Post" style={{ maxWidth: '500px', maxHeight: '500px' }} />} */}
+              </StBoxWithImage>
+              <StContentWriteBox>{post.content}</StContentWriteBox>
+            </div>
+          ))}
       </StRightArea>
     </StAllArea>
   );

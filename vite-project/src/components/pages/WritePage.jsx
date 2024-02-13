@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { addDoc, collection, getDoc } from 'firebase/firestore';
 import { db } from '../../firesbase';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../firesbase';
 import { doc, updateDoc } from 'firebase/firestore';
-import { Timestamp } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPost, updatePost } from '../../redux/modules/posts';
 
 const WritePage = () => {
   const [title, setTitle] = useState('');
@@ -16,6 +17,11 @@ const WritePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+
+  const dispatch = useDispatch();
+  const { email, nickName } = useSelector(function (item) {
+    return item.user;
+  });
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -44,34 +50,56 @@ const WritePage = () => {
     setIsLoading(true);
 
     try {
-      let uploadedImageUrl = imageUrl;
+      // let uploadedImageUrl = imageUrl;
       if (selectedFile) {
         const storageRef = ref(storage, `uploads/${selectedFile.name}`);
         await uploadBytes(storageRef, selectedFile);
-        uploadedImageUrl = await getDownloadURL(storageRef);
+        // uploadedImageUrl = await getDownloadURL(storageRef);
       }
 
       if (id) {
         // 업데이트할 데이터 정의
         const updatedData = {
           title,
-          content,
-          imageUrl: uploadedImageUrl,
-          updatedAt: Timestamp.now()
+          content
+          // imageUrl: uploadedImageUrl
         };
         await updateDoc(doc(db, 'posts', id), updatedData);
+
+        // 우리의 redux와 sync 맞추기 => dispatch
+        // put vs patch
+        // put : 덮어쓰기
+        // patch : 일부 변경하기
+        dispatch(
+          updatePost({
+            id: id,
+            updatedData: updatedData
+          })
+        );
+
         alert('게시물이 수정되었습니다!');
         navigate(`/detailpage/${id}`); // 수정된 게시글의 상세 페이지로 이동
       } else {
-        await addDoc(collection(db, 'posts'), {
+        // 추가로 들어가야 하는 것
+        // user's nickName, email
+
+        const newPost = {
           title,
           content,
-          imageUrl: uploadedImageUrl,
-          createdAt: Timestamp.now()
-        });
+          nickName,
+          email,
+          createdAt: new Date().toString()
+          // imageUrl: uploadedImageUrl,
+        };
+
+        const docRef = await addDoc(collection(db, 'posts'), newPost);
+
+        // dispatch
+        dispatch(addPost({ ...newPost, id: docRef.id }));
+
         alert('새 게시물이 추가되었습니다!');
         // 수정된 게시글의 상세 페이지로 리다이렉트
-        navigate(`/detailpage/${id}`, { state: { updated: true } });
+        navigate(`/detailpage/${docRef.id}`, { state: { updated: true } });
       }
     } catch (error) {
       console.error('Error saving the post: ', error);
