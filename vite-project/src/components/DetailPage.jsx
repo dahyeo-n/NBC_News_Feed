@@ -77,21 +77,21 @@ const DetailPage = ({ posts, setPosts }) => {
   const { postId } = useParams(); // 현재 게시물의 ID 추출
   const navigate = useNavigate();
 
-  // DetailPage 컴포넌트 내 useEffect
-  const fetchPost = async () => {
-    const docRef = doc(db, 'posts', postId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setPost({ id: docSnap.id, ...docSnap.data() }); // 게시물 데이터 상태 업데이트
-    } else {
-      navigate('/');
-    }
-  };
-
+  // Firebase에서 데이터 가져오기
   useEffect(() => {
-    fetchPost();
-  }, [postId]); // postId가 변경될 때마다 실행
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, 'posts'));
+      const initialPosts = querySnapshot.docs.map((doc) => ({
+        // doc에 id값을 추가해서 posts 추가
+        id: doc.id,
+        ...doc.data(),
+        // createdAt을 적절한 날짜 형식으로 변환
+        createdAt: doc.data().createdAt?.toDate().toLocaleString()
+      }));
+      setPosts(initialPosts);
+    };
+    fetchData();
+  }, []);
 
   // Edit button Logic
   const moveToWritePage = (id) => {

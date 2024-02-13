@@ -57,7 +57,7 @@ const App = () => {
           {/* 클릭한 본인 게시글 '수정' */}
           <Route path="/writepage/:id" element={<WritePage posts={posts} setPosts={setPosts} />} />
           <Route path="/detailpage" element={<DetailPage posts={posts} setPosts={setPosts} />} />
-          <Route path="/detailpage/:id" element={<DetailPage posts={posts} setPosts={setPosts} />} />
+          <Route path="/detailpage/:postId" element={<DetailPage posts={posts} setPosts={setPosts} />} />
         </Routes>
       </StFontColor>
     </Router>

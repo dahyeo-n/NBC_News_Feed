@@ -156,7 +156,7 @@ const WritePage = () => {
         alert('게시물이 수정되었습니다!');
         navigate(`/detailpage/${id}`); // 수정된 게시글의 상세 페이지로 이동
       } else {
-        await addDoc(collection(db, 'posts'), {
+        const docRef = await addDoc(collection(db, 'posts'), {
           title,
           content,
           imageUrl: uploadedImageUrl,
@@ -164,7 +164,7 @@ const WritePage = () => {
         });
         alert('새 게시물이 추가되었습니다!');
         // 수정된 게시글의 상세 페이지로 리다이렉트
-        navigate(`/detailpage/${id}`, { state: { updated: true } });
+        navigate(`/detailpage/${docRef.id}`, { state: { updated: true } });
       }
     } catch (error) {
       console.error('Error saving the post: ', error);
