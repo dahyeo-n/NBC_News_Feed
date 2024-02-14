@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-// db, doc, getDoc, updateDoc, useState, useEffect는 닉네임 넣으려고 한 거라 나중에 빼야 됨
-// 이메일 동적으로 가져올 때, auth 추가하기
+
 import { db } from '../../firesbase';
 import { doc, getDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
@@ -17,22 +16,18 @@ const MyPage = () => {
   const userWriteData = posts.filter(function (post) {
     return post.email === user.email;
   });
-  console.log(user);
 
-  // 기본 이미지 주소 저장 로직
   const defaultProfileImage =
     'https://firebasestorage.googleapis.com/v0/b/newsfeed-96796.appspot.com/o/profile_images%2F%EB%A1%9C%EC%A7%81%EC%9D%B4_%EB%96%A0%EC%98%A4%EB%A5%B8_%ED%96%84%EC%8A%88%ED%83%80.jpg?alt=media&token=38a85eef-766a-4c55-9aef-bdd35fe8ba7b';
   const [profileImage, setProfileImage] = useState(defaultProfileImage);
   const navigate = useNavigate();
 
-  // 사용자 이메일로 식별해서 닉네임 변경하는 로직
   const userEmail = user.email;
   const [nickname, setNickname] = useState(user.nickName);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      // const user = auth.currentUser; (이거 추가할 때, 아래 두 줄 코드 if문 안으로 넣어야 됨)
-      const docRef = doc(db, 'users', userEmail); // Using userEmail as document identifier
+      const docRef = doc(db, 'users', userEmail);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const userData = docSnap.data();
@@ -44,12 +39,10 @@ const MyPage = () => {
     };
 
     fetchUserProfile();
-    //   }, []); 아래 코드 이걸로 변경
   }, [userEmail]);
 
-  // 게시물 작성 페이지로 이동하는 로직
   const handleNavigateToWritePage = () => {
-    navigate('/writepage'); // '/writepage' 경로로 이동
+    navigate('/writepage');
   };
 
   return (
@@ -87,9 +80,8 @@ const MyPage = () => {
   );
 };
 
-// prop-types 정의 추가
 MyPage.propTypes = {
-  posts: PropTypes.array.isRequired // posts는 배열이며, 필수적으로 전달되어야 함을 의미
+  posts: PropTypes.array.isRequired
 };
 
 export default MyPage;

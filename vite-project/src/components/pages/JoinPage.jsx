@@ -8,14 +8,14 @@ import { MainStyle } from '../style/Login.style';
 import Header from '../commons/Header';
 
 function JoinPage() {
-  const [emailTxt, setEmailTxt] = useState(''); // 이메일 텍스트
-  const [selectEmail, setSelectEmail] = useState('naver.com'); // 이메일 주소
+  const [emailTxt, setEmailTxt] = useState('');
+  const [selectEmail, setSelectEmail] = useState('naver.com');
   const [customEmail, setCustomEmail] = useState(false);
-  const [email, setEmail] = useState(''); //유저 id값
-  const [nickName, setNickName] = useState(''); // 닉네임
-  const [pw, setPw] = useState(''); //비밀번호
-  const [pwCheck, setPwCheck] = useState(''); // 비밀번호 확인
-  //밸리데이션
+  const [email, setEmail] = useState('');
+  const [nickName, setNickName] = useState('');
+  const [pw, setPw] = useState('');
+  const [pwCheck, setPwCheck] = useState('');
+
   const [emailValid, setEmailValid] = useState(false);
   const [nickNameValid, setNickNameValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
@@ -24,7 +24,6 @@ function JoinPage() {
 
   const navigate = useNavigate();
 
-  //파이어베이스 데이터 추가
   const addUser = async (email, nickName) => {
     const userRef = collection(db, 'users');
     const userQuery = query(userRef, where('email', '==', email));
@@ -41,8 +40,6 @@ function JoinPage() {
     }
   };
 
-  //데이터 영역
-  //이메일txt
   const emailTextHandler = (e) => {
     setEmailTxt(e.target.value);
     if (e.target.value.length > 0) {
@@ -51,7 +48,7 @@ function JoinPage() {
       setEmailValid(false);
     }
   };
-  //이메일select
+
   const emailHandler = (e) => {
     const selctEmail = e.target.value;
     if (selctEmail === '직접입력') {
@@ -60,7 +57,7 @@ function JoinPage() {
       setSelectEmail(selctEmail);
     }
   };
-  //닉네임
+
   const nickNameHandler = (e) => {
     setNickName(e.target.value);
     if (e.target.value.length > 1) {
@@ -69,7 +66,7 @@ function JoinPage() {
       setNickNameValid(false);
     }
   };
-  //비밀번호
+
   const pwChangeHandler = (e) => {
     setPw(e.target.value);
     const regex =
@@ -80,7 +77,7 @@ function JoinPage() {
       setPwValid(false);
     }
   };
-  //비밀번호 체크
+
   const pwCheckHandler = (e) => {
     setPwCheck(e.target.value);
   };
@@ -91,7 +88,6 @@ function JoinPage() {
       setPwCheckValid(false);
     }
   }, [pw, pwCheck]);
-  //버튼 disabled
   useEffect(() => {
     if (emailValid && nickNameValid && pwValid && pwCheckValid) {
       setDisabled(false);
@@ -100,7 +96,6 @@ function JoinPage() {
     }
   }, [emailValid, nickNameValid, pwValid, pwCheckValid]);
 
-  //회원가입 버튼
   const subBtn = async (e) => {
     e.preventDefault();
     try {
@@ -112,7 +107,6 @@ function JoinPage() {
     }
   };
 
-  //이메일값
   useEffect(() => {
     setEmail(`${emailTxt}@${selectEmail}`);
   }, [emailTxt, selectEmail]);
@@ -136,7 +130,6 @@ function JoinPage() {
                       <option value={'daum.net'}>daum.net</option>
                       <option value={'nate.com'}>nate.com</option>
                       <option value={'직접입력'}>직접입력</option>
-                      {/* label 직접입력 선택시 input으로 바뀌기, onChange로 인풋 값 받기 */}
                     </S.EmailSelect>
                   ) : (
                     <S.CustomInput onChange={(e) => setEmail(e.target.value)} />
@@ -144,7 +137,6 @@ function JoinPage() {
                 </S.EmailForm>
                 {!emailValid && <S.ValidationJoin>*이메일을 입력해주세요.</S.ValidationJoin>}
               </S.BorderTop>
-              {/* 정보입력 */}
               <S.UserBorder>
                 <S.Block>
                   <S.StyleP>

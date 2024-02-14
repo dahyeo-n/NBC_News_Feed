@@ -25,7 +25,6 @@ function MainPage() {
     const fetchData = async () => {
       const querySnapshot = await getDocs(collection(db, 'posts'));
 
-      // initialPosts => 데이터로 이루어진 배열(객체로 이루어진 배열)
       const initialPosts = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data()
@@ -36,7 +35,6 @@ function MainPage() {
     fetchData();
   }, []);
 
-  // 로그인 확인
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -45,7 +43,6 @@ function MainPage() {
         const getUsers = async () => {
           const querySnapshot = await getDocs(collection(db, 'users'));
 
-          // initialPosts => 데이터로 이루어진 배열(객체로 이루어진 배열)
           const users = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data()
@@ -65,7 +62,6 @@ function MainPage() {
           })
         );
       } else {
-        // 로그인한 유저가 존재하지 않는 경우
         dispatch(logoutUser());
       }
     });

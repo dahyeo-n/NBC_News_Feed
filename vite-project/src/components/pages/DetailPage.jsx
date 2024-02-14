@@ -7,14 +7,12 @@ import Header from '../commons/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { deletePost } from '../../redux/modules/posts';
 
-// 기억 { currentUser }
 const DetailPage = () => {
   const { posts, user } = useSelector(function (item) {
     return item;
   });
 
-  // const [post, setPost] = useState(null); // 단일 게시물 데이터를 위한 상태
-  const { id: postId } = useParams(); // 현재 게시물의 ID 추출
+  const { id: postId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -22,39 +20,20 @@ const DetailPage = () => {
     return p.id === postId;
   });
 
-  // DetailPage 컴포넌트 내 useEffect
-  // const fetchPost = async () => {
-  //   const docRef = doc(db, 'posts', postId);
-  //   const docSnap = await getDoc(docRef);
-
-  //   if (docSnap.exists()) {
-  //     setPost({ id: docSnap.id, ...docSnap.data() }); // 게시물 데이터 상태 업데이트
-  //   } else {
-  //     navigate('/');
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchPost();
-  // }, [postId]); // postId가 변경될 때마다 실행
-
-  // Edit button Logic
   const moveToWritePage = () => {
     navigate(`/writepage/${post.id}`);
   };
 
-  // deleteDoc을 사용하여 게시글 삭제
   const onDeletePostButtonClick = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
         const postRef = doc(db, 'posts', post.id);
         await deleteDoc(postRef);
-        // setPosts((prev) => prev.filter((post) => post.id !== id));
 
-        // dispatch
         dispatch(deletePost(post.id));
         navigate('/');
       } catch (error) {
+        alert('알수없는 오류가 발생 하였습니다.');
         console.error('Error deleting document: ', error);
       }
     }
@@ -89,10 +68,9 @@ const DetailPage = () => {
   );
 };
 
-// prop-types 정의 추가
 DetailPage.propTypes = {
-  posts: PropTypes.array.isRequired, // posts는 배열이며, 필수적으로 전달되어야 함을 의미
-  setPosts: PropTypes.func.isRequired // setPosts는 함수이며, 필수적으로 전달되어야 함을 의미
+  posts: PropTypes.array.isRequired,
+  setPosts: PropTypes.func.isRequired
 };
 
 export default DetailPage;

@@ -21,7 +21,6 @@ function SocialLoginBtn({ type = 'google' }) {
       confirm('로그인 성공!');
       navigate('/');
     } else {
-      console.log('이미 가입 된 이메일 처리 입니다.');
       confirm('로그인 성공!');
       navigate('/');
     }
