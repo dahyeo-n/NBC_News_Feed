@@ -84,7 +84,6 @@ export default MainPage;
 
 export const Parents = styled.div`
   width: 100%;
-  height: 1500px;
   background-color: #1c1c20 !important;
   color: #fff !important;
   border-radius: 20px;
