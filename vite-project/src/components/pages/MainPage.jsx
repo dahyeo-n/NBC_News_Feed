@@ -38,23 +38,34 @@ function MainPage() {
 
   // 로그인 확인
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // 로그인 한 유저가 존재하는 경우
+        let nickName = '';
 
-        // (1) github
+        const getUsers = async () => {
+          const querySnapshot = await getDocs(collection(db, 'users'));
 
-        // (2) google
+          // initialPosts => 데이터로 이루어진 배열(객체로 이루어진 배열)
+          const users = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+
+          return users;
+        };
+
+        const users = await getUsers();
+        const loggedUser = users.find((u) => u.email === user.email);
 
         dispatch(
           loginUser({
-            email: user.email,
-            nickName: user.displayName,
+            email: loggedUser.email,
+            nickName: loggedUser.nickName,
             isLogin: true
           })
         );
       } else {
-        // 로그인 한 유저가 존재하지 않는 경우
+        // 로그인한 유저가 존재하지 않는 경우
         dispatch(logoutUser());
       }
     });
@@ -89,5 +100,10 @@ export const Wrapper = styled.div`
 
 const NoPosts = styled.div`
   display: flex;
-  text-align: center;
+  width: 1000px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 28px;
+  font-weight: bold;
 `;

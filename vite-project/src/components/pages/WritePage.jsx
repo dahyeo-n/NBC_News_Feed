@@ -104,10 +104,10 @@ const WritePage = () => {
 
         // dispatch
         dispatch(addPost({ ...newPost, id: docRef.id }));
-
         alert('새 게시물이 추가되었습니다!');
+        navigate('/');
         // 수정된 게시글의 상세 페이지로 리다이렉트
-        navigate(`/detailpage/${docRef.id}`, { state: { updated: true } });
+        // navigate(`/detailpage/${docRef.id}`, { state: { updated: true } });
       }
     } catch (error) {
       console.error('Error saving the post: ', error);

@@ -36,7 +36,7 @@ function JoinPage() {
       confirm('회원가입 성공!');
       navigate('/loginpage');
     } else {
-      alert('이미 가입 된 이메일 입니다.');
+      alert('이미 가입된 이메일입니다.');
       emailTxt('');
     }
   };
@@ -142,7 +142,7 @@ function JoinPage() {
                     <S.CustomInput onChange={(e) => setEmail(e.target.value)} />
                   )}
                 </S.EmailForm>
-                {!emailValid && <S.ValidationJoin>*이메일을 입력 해주세요.</S.ValidationJoin>}
+                {!emailValid && <S.ValidationJoin>*이메일을 입력해주세요.</S.ValidationJoin>}
               </S.BorderTop>
               {/* 정보입력 */}
               <S.UserBorder>
@@ -151,7 +151,7 @@ function JoinPage() {
                     <S.Label>닉네임</S.Label>
                     <S.LabelInput type="text" value={nickName} onChange={nickNameHandler} />
                   </S.StyleP>
-                  {!nickNameValid && <S.ValidationJoin>*두 글자 이상 입력 해주세요.</S.ValidationJoin>}
+                  {!nickNameValid && <S.ValidationJoin>*두 글자 이상 입력해주세요.</S.ValidationJoin>}
                 </S.Block>
               </S.UserBorder>
               <S.BorderBottom>
