@@ -66,7 +66,7 @@ function MainPage() {
       <Parents>
         <Wrapper>
           <User />
-          {posts.length > 0 ? <Card /> : <div>작성된 게시글이 없습니다.</div>}
+          {posts.length > 0 ? <Card /> : <NoPosts>작성된 게시글이 없습니다.</NoPosts>}
         </Wrapper>
       </Parents>
     </>
@@ -74,10 +74,20 @@ function MainPage() {
 }
 
 export default MainPage;
+
 export const Parents = styled.div`
   width: 100%;
-  border-top: 2px solid black;
+  height: 1000px;
+  background-color: #1c1c20 !important;
+  color: #fff !important;
+  border-radius: 20px;
 `;
+
 export const Wrapper = styled.div`
   display: flex;
+`;
+
+const NoPosts = styled.div`
+  display: flex;
+  text-align: center;
 `;

@@ -89,8 +89,15 @@ const WritePage = () => {
           content,
           nickName,
           email,
-          createdAt: new Date().toString()
-          // imageUrl: uploadedImageUrl,
+          // 현재 날짜 및 시간을 "00월 00일 00시 00분" 형식으로 포맷팅
+          createdAt: new Intl.DateTimeFormat('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // 24시간 형식
+          }).format(new Date()) // imageUrl: uploadedImageUrl,
         };
 
         const docRef = await addDoc(collection(db, 'posts'), newPost);

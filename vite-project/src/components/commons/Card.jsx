@@ -21,11 +21,10 @@ function Card() {
             <S.CardTitle>
               <h2>{post.title}</h2>
             </S.CardTitle>
-            <div>
+            <S.CardNicknameCreatedAt>
               {post.nickName} ㅣ {post.createdAt}
-            </div>
-            <div>{post.imageUrl}</div>
-            <div>{post.content}</div>
+            </S.CardNicknameCreatedAt>
+            <S.CardContent>{post.content}</S.CardContent>
           </S.Parents>
         );
       })}

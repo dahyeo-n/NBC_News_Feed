@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import * as S from '../style/User.style';
 import { getAuth, signOut } from 'firebase/auth';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 function User() {
   const navigate = useNavigate();
@@ -31,9 +31,9 @@ function User() {
   };
 
   return (
-    <S.UserSection>
+    <UserSection>
       {isLogin && (
-        <S.Parents>
+        <Parents>
           {/* 로그인시 */}
 
           {/* {signUpUser && signUpUser.length > 0 && currentUser.nickName === null ? (
@@ -42,28 +42,148 @@ function User() {
             <UserNickName>{currentUser.nickName}님</UserNickName>
           )} */}
           <div>
-            <S.NickNameSpan>{user.nickName}</S.NickNameSpan>님 환영 합니다.
+            <NickNameSpan>{user.nickName}</NickNameSpan>님 환영합니다.
           </div>
-          <S.UserBtnSection>
-            <Link to={'/mypage'}>마이페이지</Link>
-            <button onClick={outBtn}>로그아웃</button>
-          </S.UserBtnSection>
-        </S.Parents>
+          <UserBtnSection>
+            <Link
+              style={{
+                color: 'black',
+                border: 'none',
+                margin: '10px',
+                padding: '10px',
+                fontSize: 'medium',
+                fontWeight: 'bold',
+                backgroundColor: 'darkgray',
+                borderRadius: '10px'
+              }}
+              to={'/mypage'}
+            >
+              마이페이지
+            </Link>
+            <StLogoutBtn onClick={outBtn}>로그아웃</StLogoutBtn>
+          </UserBtnSection>
+        </Parents>
       )}
       {!isLogin && (
         //  회원이 아닐 때
-        <S.NotJoin>
+        <NotJoin>
           <div>
-            <Link to={'/loginpage'}>로그인</Link>
+            <Link
+              style={{
+                color: 'white',
+                border: 'none',
+                margin: '10px',
+                padding: '10px',
+                fontSize: 'medium',
+                backgroundColor: 'gray',
+                borderRadius: '10px',
+                fontWeight: 'bold'
+              }}
+              to={'/loginpage'}
+            >
+              로그인
+            </Link>
           </div>
           <div>
-            <Link to={'/joinpage'}>회원가입</Link>
+            <Link
+              style={{
+                color: 'black',
+                border: 'none',
+                margin: '10px',
+                padding: '10px',
+                fontSize: 'medium',
+                fontWeight: 'bold',
+                backgroundColor: 'darkgray',
+                borderRadius: '10px'
+              }}
+              to={'/joinpage'}
+            >
+              회원가입
+            </Link>
           </div>
-        </S.NotJoin>
+        </NotJoin>
       )}
-      <S.WriteBtn onClick={writeBtnHandler}>게시물작성</S.WriteBtn>
-    </S.UserSection>
+      <WriteBtn onClick={writeBtnHandler}>게시물 작성</WriteBtn>
+    </UserSection>
   );
 }
 
 export default User;
+
+const UserSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0px 0px 100px;
+`;
+
+const Parents = styled.div`
+  height: 200px;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  background-color: #8977ad;
+  margin: 10px 0 10px 10px;
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const NotJoin = styled.div`
+  height: 200px;
+  width: 250px;
+  background-color: #3e3e3e;
+  display: flex;
+  border-radius: 10px;
+  margin: 10px 0 10px 10px;
+  flex-direction: column;
+  align-items: center;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  font-size: 25px;
+`;
+
+const WriteBtn = styled.button`
+  border: none;
+  margin: 10px;
+  padding: 10px;
+  font-size: medium;
+  font-weight: bold;
+  color: white;
+  background-color: #3e3e3e;
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover {
+    transition: all 0.2s;
+    transform: scale(1.05);
+  }
+`;
+
+const UserBtnSection = styled.div`
+  display: flex;
+  margin-top: 30px;
+  align-items: center;
+  gap: 5px;
+  & > *:hover {
+    color: #8977ad;
+  }
+  & > button {
+    font-size: 16px;
+  }
+`;
+const NickNameSpan = styled.span`
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const StLogoutBtn = styled.button`
+  border: none;
+  padding: 10px;
+  font-size: medium;
+  color: white;
+  background-color: #3e3e3e;
+  border-radius: 10px;
+  font-weight: bold;
+`;

@@ -11,19 +11,16 @@ export const Parents = styled.div`
   width: 250px;
   display: flex;
   justify-content: center;
-  border: 1px solid #8977ad;
-  margin: 10px 0 10px 10px;
   border-radius: 10px;
   flex-direction: column;
   align-items: center;
 `;
+
 export const NotJoin = styled.div`
   height: 300px;
   width: 250px;
   display: flex;
-  border: 1px solid #8977ad;
   border-radius: 10px;
-  margin: 10px 0 10px 10px;
   flex-direction: column;
   align-items: center;
   align-items: center;
@@ -52,12 +49,6 @@ export const WriteBtn = styled.button`
   }
 `;
 
-export const ImgSection = styled.div`
-  height: 200px;
-  width: 200px;
-  margin-top: 20px;
-  border: 2px solid black;
-`;
 export const UserNickName = styled.p`
   margin-top: 20px;
 `;

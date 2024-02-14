@@ -23,7 +23,7 @@ export default Header;
 export const StHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 10px 150px 20px 150px;
+  padding: 20px 40px;
 `;
 const StLogoImage = styled.img`
   width: 100px;
