@@ -1,12 +1,13 @@
 import React from 'react';
 import GitHubImg from '../style/image/github.png';
+import GoogleImg from '../style/image/google.png';
 import { SocialBtn } from '../style/SocialLogin.style';
-import { GithubAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '../../firesbase';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-function GitHubBtn() {
+function SocialLoginBtn({ type = 'google' }) {
   const navigate = useNavigate();
   const addUser = async (email, nickName) => {
     const userRef = collection(db, 'users');
@@ -27,7 +28,12 @@ function GitHubBtn() {
   };
   //로그인 버튼 클릭시
   const handleGithubLogin = () => {
-    const provider = new GithubAuthProvider();
+    let provider;
+    if (type === 'google') {
+      provider = new GoogleAuthProvider();
+    } else if (type === 'github') {
+      provider = new GithubAuthProvider();
+    }
     signInWithPopup(auth, provider)
       .then((data) => {
         const githubEmail = data.user.email;
@@ -41,9 +47,10 @@ function GitHubBtn() {
   };
   return (
     <SocialBtn onClick={handleGithubLogin}>
-      <img src={GitHubImg} alt="깃허브로 로그인" />
+      {type === 'google' && <img src={GoogleImg} alt="구글로 로그인" />}
+      {type === 'github' && <img src={GitHubImg} alt="깃허브로 로그인" />}
     </SocialBtn>
   );
 }
 
-export default GitHubBtn;
+export default SocialLoginBtn;

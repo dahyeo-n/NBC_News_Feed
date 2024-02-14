@@ -14,6 +14,11 @@ const MyPage = () => {
     return item;
   });
 
+  const userWriteData = posts.filter(function (post) {
+    return post.email === user.email;
+  });
+  console.log(user);
+
   // 기본 이미지 주소 저장 로직
   const defaultProfileImage =
     'https://firebasestorage.googleapis.com/v0/b/newsfeed-96796.appspot.com/o/profile_images%2F%EB%A1%9C%EC%A7%81%EC%9D%B4_%EB%96%A0%EC%98%A4%EB%A5%B8_%ED%96%84%EC%8A%88%ED%83%80.jpg?alt=media&token=38a85eef-766a-4c55-9aef-bdd35fe8ba7b';
@@ -60,11 +65,10 @@ const MyPage = () => {
         <StWritePostBtn onClick={handleNavigateToWritePage}>게시물 작성</StWritePostBtn>
       </StLeftArea>
       <StRightArea>
-        {posts
-          .filter(function (post) {
-            return post.email === user.email;
-          })
-          .map((post) => (
+        {userWriteData.length === 0 ? (
+          <None>😢아직 작성한 게시물이 없습니다😢</None>
+        ) : (
+          userWriteData.map((post) => (
             <div key={post.id}>
               <StWriteBox
                 onClick={() => {
@@ -76,7 +80,8 @@ const MyPage = () => {
                 <StContent>{post.content}</StContent>
               </StWriteBox>
             </div>
-          ))}
+          ))
+        )}
       </StRightArea>
     </StAllArea>
   );
@@ -199,4 +204,16 @@ const StWritePostBtn = styled.button`
     transition: all 0.2s;
     transform: scale(1.05);
   }
+`;
+const None = styled.div`
+  color: #7472e7;
+  border: 1px solid white;
+  width: 100%;
+  height: 300px;
+  font-size: 30px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column-reverse;
+  align-items: center;
+  font-weight: bold;
 `;

@@ -4,8 +4,7 @@ import * as S from '../style/Login.style';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firesbase';
 import Header from '../commons/Header';
-import GoogleBtn from '../commons/GoogleBtn';
-import GitHubBtn from '../commons/GitHubBtn';
+import SocialLoginBtn from '../commons/SocialLoginBtn';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -107,10 +106,10 @@ function LoginPage() {
               <p>or</p>
               <S.EtcLoginUl>
                 <li>
-                  <GoogleBtn />
+                  <SocialLoginBtn type="google" />
                 </li>
                 <li>
-                  <GitHubBtn />
+                  <SocialLoginBtn type="github" />
                 </li>
               </S.EtcLoginUl>
             </S.EtcLoginWrap>
