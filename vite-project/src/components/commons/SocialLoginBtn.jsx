@@ -1,21 +1,19 @@
+import React from 'react';
+import GitHubImg from '../style/image/github.png';
 import GoogleImg from '../style/image/google.png';
-
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { SocialBtn } from '../style/SocialLogin.style';
+import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '../../firesbase';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { SocialBtn } from '../style/SocialLogin.style';
 
-const GoogleBtn = () => {
+function SocialLoginBtn({ type = 'google' }) {
   const navigate = useNavigate();
-
-  // 파이어베이스 데이터 추가 전에 데이터 중복 여부를 위해 getDocs
   const addUser = async (email, nickName) => {
-    //email,nickName을 매개변수로 받아 비동기로 실행
     const userRef = collection(db, 'users');
     const userQuery = query(userRef, where('email', '==', email));
     const querySnapshot = await getDocs(userQuery);
-    // db에서 email이 똑같은 데이터를 받아오고 없다면 (길이가 0이면) 추가
+
     if (querySnapshot.size === 0) {
       const newUser = { email: email, nickName: nickName };
       const collectionRef = collection(db, 'users');
@@ -23,19 +21,23 @@ const GoogleBtn = () => {
       confirm('로그인 성공!');
       navigate('/');
     } else {
-      console.log('이미 가입된 이메일입니다.');
       confirm('로그인 성공!');
       navigate('/');
     }
   };
-
-  const handleGoogleLogin = () => {
-    const provider = new GoogleAuthProvider(); // provider 구글 설정
-    signInWithPopup(auth, provider) // 팝업창 띄워서 로그인
+  //로그인 버튼 클릭시
+  const handleGithubLogin = () => {
+    let provider;
+    if (type === 'google') {
+      provider = new GoogleAuthProvider();
+    } else if (type === 'github') {
+      provider = new GithubAuthProvider();
+    }
+    signInWithPopup(auth, provider)
       .then((data) => {
-        const googleEmail = data.user.email;
-        const googleNickName = data.user.displayName;
-        addUser(googleEmail, googleNickName); //db추가 함수에 매개변수로 전달
+        const githubEmail = data.user.email;
+        const githubNickName = data.user.displayName;
+        addUser(githubEmail, githubNickName);
       })
       .catch((err) => {
         console.log(err);
@@ -43,10 +45,11 @@ const GoogleBtn = () => {
       });
   };
   return (
-    <SocialBtn onClick={handleGoogleLogin}>
-      <img src={GoogleImg} alt="구글로 로그인" />
+    <SocialBtn onClick={handleGithubLogin}>
+      {type === 'google' && <img src={GoogleImg} alt="구글로 로그인" />}
+      {type === 'github' && <img src={GitHubImg} alt="깃허브로 로그인" />}
     </SocialBtn>
   );
-};
+}
 
-export default GoogleBtn;
+export default SocialLoginBtn;

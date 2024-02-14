@@ -1,7 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import { useEffect } from 'react';
-// import { auth } from '../../firesbase';
-// import { onAuthStateChanged } from 'firebase/auth';
 import MainPage from '../pages/MainPage';
 import LoginPage from '../pages/LoginPage';
 import JoinPage from '../pages/JoinPage';
