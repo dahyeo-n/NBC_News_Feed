@@ -78,7 +78,6 @@ https://devtiny.vercel.app
 
 ## 4. 발표 PPT
 
-<div>
 <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0002.jpg"/>
 <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0003.jpg"/>
 <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0004.jpg"/>
@@ -87,7 +86,6 @@ https://devtiny.vercel.app
 <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0007.jpg"/>
 <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0008.jpg"/>
 <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0009.jpg"/>
-</div>
 
 <div align="right">
   
