@@ -50,7 +50,7 @@ https://devtiny.vercel.app
 
 ### Client State Management
 
-![Redux](https://img.shields.io/badge/Redux-FACC2E?style=for-the-badge&logo=redux&logoColor=white)
+![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
 
 ### Design
 
