@@ -70,7 +70,7 @@ https://devtiny.vercel.app
 
 |                                 메인 페이지 (비로그인 시)                                 |                                  메인 페이지 (로그인 시)                                  |
 | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
-| <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/1.png"/> | <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/2.png"/> |
+| <img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/1.png"/> | <img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/2.png"/> |
 |                                    상세 및 작성 페이지                                       |                                        마이 페이지                                        |
 | <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/4.png"/> | <img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/3.png"/> |
 |                                      회원가입 페이지                                      |                                       로그인 페이지                                       |
@@ -78,14 +78,14 @@ https://devtiny.vercel.app
 
 ## 4. 발표 PPT
 
-<img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0002.jpg"/>
-<img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0003.jpg"/>
-<img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0004.jpg"/>
-<img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0005.jpg"/>
-<img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0006.jpg"/>
-<img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0007.jpg"/>
-<img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0008.jpg"/>
-<img width="500" src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0009.jpg"/>
+<img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0002.jpg"/>
+<img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0003.jpg"/>
+<img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0004.jpg"/>
+<img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0005.jpg"/>
+<img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0006.jpg"/>
+<img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0007.jpg"/>
+<img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0008.jpg"/>
+<img width=100% src="https://github.com/dahyeo-n/Devtiny/blob/dev/public/images/Devtiny_pages-to-jpg-0009.jpg"/>
 
 <div align="right">
   
