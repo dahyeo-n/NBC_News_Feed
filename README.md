@@ -24,11 +24,11 @@ https://devtiny.vercel.app
 
 ## 1. 팀원 소개
 
-|                                                              진다현                                                               |                                      한은범                                      |                  안주원                  |              이봉진               |
+|                                                              진다현 (리더)                                                              |                                      한은범 (부리더)                                     |                  안주원                  |              이봉진               |
 | :-------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: | :--------------------------------------: | :-------------------------------: |
 | <img width="225px" src="https://avatars.githubusercontent.com/u/154739298?s=400&u=ffcac1e1be1165a48832c6f33c04f9b617c70802&v=4" /> | <img width="225px" src="https://avatars.githubusercontent.com/u/147644376?v=4"/> | <img width="225px" src="https://avatars.githubusercontent.com/u/154520094?v=4"/> | <img width="225px" src="https://avatars.githubusercontent.com/u/154494949?v=4"/> |
 |                                             [@dahyeo-n](https://github.com/dahyeo-n)                                              |                       [@CodHan](https://github.com/CodHan)                       | [@joo1e](https://github.com/joo1e) |                       [@bongjin-lee](https://github.com/bongjin-lee)
-|            리더 | 상세, 작성, 마이 페이지            |            부리더 | 로그인, 회원가입, 메인 페이지            |            팀원 | 메인 페이지            |            팀원 | 마이 페이지           
+|            상세, 작성, 마이 페이지           |            로그인, 회원가입, 메인 페이지           |            메인 페이지            |            마이 페이지           
 
 ## 2. Stacks 🐈
 
